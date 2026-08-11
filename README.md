@@ -18,11 +18,11 @@ Langkah ini menyiapkan pondasi aplikasi dan perizinan sistem Android.
 
   
 
-1.  Unduh dan instal F-Droid dari `[https://f-droid.org/](https://f-droid.org/)`.
+1.  Unduh dan instal F-Droid dari https://f-droid.org/ .
 
 2.  Unduh dan instal Termux melalui F-Droid.
     
-3.  Unduh dan instal Termux-X11 dari rilis GitHub di `[https://github.com/termux/termux-x11/releases](https://github.com/termux/termux-x11/releases)`.
+3.  Unduh dan instal Termux-X11 dari rilis GitHub di https://github.com/termux/termux-x11/releases .
 
 4.  Matikan fitur penghemat baterai atau pembatasan baterai untuk aplikasi Termux dan Termux-X11.
 
