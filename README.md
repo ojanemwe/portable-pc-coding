@@ -12,6 +12,8 @@
 -   **Total Penyimpanan (Storage):** ~2.5 GB hingga 3.5 GB (siapkan ruang kosong minimal 5 GB untuk stabilitas).
 
 
+
+
 ## 1. Persiapan Perangkat Android
 
 Langkah ini menyiapkan pondasi aplikasi dan perizinan sistem Android.
@@ -31,7 +33,7 @@ Langkah ini menyiapkan pondasi aplikasi dan perizinan sistem Android.
 6.  Aktifkan Opsi Pengembang (Developer Options) pada pengaturan Android, lalu aktifkan opsi "Disable Child Process Restrictions".
     
       
-    
+---    
 
 ## 2. Instalasi Paket Dasar Termux
 
@@ -49,6 +51,8 @@ termux-setup-storage
 
 ```
 
+
+---
 ## 3. Konfigurasi Launcher Script (Resolusi 16:9 & Clean Terminal)
 
 Buat skrip utama peluncur desktop yang telah dimodifikasi untuk resolusi otomatis dan penghilangan _error output_.
@@ -134,6 +138,7 @@ Buat skrip utama peluncur desktop yang telah dimodifikasi untuk resolusi otomati
 	
 	```
 
+---
 ## 4. Konfigurasi Tombol Shutdown di Desktop
 
 Buat ikon _shutdown_ di layar desktop untuk menutup sesi dengan aman.
@@ -167,6 +172,7 @@ chmod +x ~/Desktop/shutdown.desktop
 > 
 >   
 
+---
 ## 5. Instalasi Aplikasi Kantoran & Desain
 
 Jalankan perintah instalasi berikut:
@@ -205,7 +211,7 @@ rm -rf PhotoGIMP
     
       
     
-
+---
 ## 6. Instalasi Lingkungan Vibe Coding (Web App Developer)
 
 ### Editor Kode
@@ -237,6 +243,8 @@ npm install -g opencode-ai
 
 ```
 
+
+---
 ## 7. Pintasan AI Agent di Desktop Xfce4
 
 Buat peluncur di desktop yang akan menyalakan `9router` secara otomatis dan mengeksekusi `Hermes Agent` di dalam terminal Xfce.
@@ -267,6 +275,7 @@ chmod +x ~/Desktop/AI-Agent.desktop
 
 ```
 
+---
 ## 8. Pembuatan Pintasan Langsung (Shortcut) di Homescreen Android
 
 Langkah ini membuat akses satu kali ketuk dari layar utama _smartphone_ langsung menuju Desktop Xfce4.
