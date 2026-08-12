@@ -231,11 +231,16 @@ Instal Node.js dan pasang `9router` (secara global), `hermes-agent`, dan `openco
 
 ```
 pkg install nodejs -y
-npm install -g git+https://github.com/decolua/9router.git
-npm install -g hermes-agent
+```
+install 9router+Hermes:
+```
+npm install -g 9router
+curl -fsSL https://raw.githubusercontent.com/AbuZar-Ansarii/Hermes-Agent-On-Android/main/nous_agent.sh | bash
 
 ```
-Jika ingin menggunakan OpenCode, gantilah `Hermes Agent` dengan `OpenCode`:
+> jika 9router gagal, gunakan `npm install -g git+https://github.com/decolua/9router.git`
+
+Jika ingin menggunakan OpenCode, gantilah `Hermes Agent` dengan command untuk menginstall `OpenCode`:
 ```
 npm install -g opencode-ai
 
