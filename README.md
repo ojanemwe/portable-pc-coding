@@ -244,6 +244,7 @@ npm install -g opencode-ai
 ```
 
 
+
 ---
 ## 7. Pintasan AI Agent di Desktop Xfce4
 
@@ -274,6 +275,17 @@ Simpan, lalu berikan izin akses:
 chmod +x ~/Desktop/AI-Agent.desktop
 
 ```
+
+### Jika ingin melakukan update pada 9router, lakukan hal berikut:
+Gunakan Terminal Baru (Rekomendasi):
+- Tutup jendela AI Agent tersebut sepenuhnya.
+- Buka terminal standar dari menu aplikasi (Applications > System > Xfce Terminal).
+- Matikan proses lama dan jalankan instalasi ulang:
+```
+pkill -f 9router
+npm install -g git+https://github.com/decolua/9router.git
+```
+_Port untuk membuka 9router adalah: `http://localhost:20128`_
 
 ---
 ## 8. Pembuatan Pintasan Langsung (Shortcut) di Homescreen Android
