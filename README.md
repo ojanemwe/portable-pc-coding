@@ -28,9 +28,7 @@ Langkah ini menyiapkan pondasi aplikasi dan perizinan sistem Android.
 
 4.  Matikan fitur penghemat baterai atau pembatasan baterai untuk aplikasi Termux dan Termux-X11.
 
-5. Nyalakan `developer options`, dan enable `"Disable Child Process Restrictions"` option.
-
-6.  Aktifkan Opsi Pengembang (Developer Options) pada pengaturan Android, lalu aktifkan opsi "Disable Child Process Restrictions".
+5.  Aktifkan Opsi Pengembang (Developer Options) pada pengaturan Android, lalu aktifkan opsi "Disable Child Process Restrictions".
     
       
 ---    
