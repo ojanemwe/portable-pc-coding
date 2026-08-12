@@ -1,7 +1,7 @@
-# portable-pc-coding
+# portable-pc-coding - Tutorial Lengkap
 
 
-# Tutorial Lengkap Setup Portable PC (Xfce4 di Android) untuk Vibe Coding
+# Setup Portable PC (Xfce4 di Android) untuk Vibe Coding
 
 ## Spesifikasi & Kebutuhan Penyimpanan
 
