@@ -60,7 +60,7 @@ Buat skrip utama Shortcut desktop yang telah dimodifikasi untuk resolusi otomati
 	```
 	#!/data/data/com.termux/files/usr/bin/bash
 
-	# Matikan proses yang tersisa[cite: 1]
+	# Matikan proses yang tersisa
 	pkill -9 -f "termux.x11" 2>/dev/null
 	pkill -9 -f "xfce4-session" 2>/dev/null
 	pkill -9 -f "pulseaudio" 2>/dev/null
@@ -69,7 +69,7 @@ Buat skrip utama Shortcut desktop yang telah dimodifikasi untuk resolusi otomati
 
 	sleep 2
 
-	# Bersihkan file PID dan soket kedaluwarsa[cite: 1]
+	# Bersihkan file PID dan soket kedaluwarsa
 	rm -f /data/data/com.termux/files/usr/var/run/dbus/pid
 	gpgconf --kill gpg-agent 2>/dev/null
 
