@@ -384,7 +384,7 @@ chmod +x ~/.shortcuts/Mulai-Desktop.sh
 
 Bonus:
 > **Skrip Pintasan Terminal Opsional (Jika Dibuat)**
-> Jika membuat pintasan khusus untuk langsung masuk ke direktori projects via terminal PRoot, ubah target perpindahan foldernya:
+> Jika membuat pintasan khusus untuk langsung masuk ke direktori projects via terminal PRoot, ubah target perpindahan foldernya dengan `start-proot-projects.sh`, jalankan script berikut pada Termux/Xfce4 Terminal:
 ```
 cat << 'EOF' > ~/start-proot-projects.sh
 #!/bin/bash
