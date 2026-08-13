@@ -1,4 +1,5 @@
-# portable-pc-coding - Tutorial Lengkap
+# portable-pc-coding - Tutorial
+
 # **Setup Portable PC (Xfce4 di Android) untuk Agentic/Vibe Coding** (Tanpa Root)
 
 ## Spesifikasi & Kebutuhan Penyimpanan
@@ -156,7 +157,7 @@ chmod +x ~/Desktop/shutdown.desktop
 
 ```
 
-> **CATATAN KANTORAN:** _Bagi pengguna yang hanya membutuhkan fungsi **pekerjaan kantor** dan **desain ringan**, jalankan Tahap 5 dan **langsung ke Tahap 8**. Anda tidak perlu menerapkan Tahap 6 dan 7._
+> **CATATAN USER KANTORAN:** _Bagi pengguna yang hanya membutuhkan fungsi **pekerjaan kantor** dan **desain ringan**, jalankan Tahap 5 dan **langsung ke Tahap 8**. Anda tidak perlu menerapkan Tahap 6 dan 7._
 > 
 >   
 
@@ -203,8 +204,10 @@ rm -rf PhotoGIMP
 ## 6. Instalasi Lingkungan Vibe Coding (Web App Developer)
 Pada bagian ini anda perlu memahami dimana _Command_ akan ditempelkan karena di tahap ini kita akan menggunakan 2 terminal. berikut adalah perbedaan tanda yang akan saya berikan:
 **[TERMUX / XFCE]** = **`~ $`** _command_
+
 **[UBUNTU / PRoot]** = **`root@ubuntu:~#`** _command_
 > untuk keluar dari PRoot Terminal gunakan command `exit`.
+
 > terminal bisa saja menuliskan **`root@localhost:~#`** keduanya sama saja.
 
 
