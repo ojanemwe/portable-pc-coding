@@ -285,7 +285,23 @@ npm install -g 9router opencode-ai
 > anda bisa keluar dari terminal PRoot terlebih dahulu dengan command `exit`, lalu `[Enter]`
 >
 
-### Membuat Shortcut Terminal PRoot
+**F. Menghubungkan 9router dengan OpenCode**
+
+Karena kita telah melakukan Symlink folder `.config` maka Kita dapat melakukan konfigurasi melalui `Thunar File Manager` pada desktop mode (`~$ pc` > `[Enter]`) dengan cara:
+	1. Buka **Xfce Terminal** (Aplication > System > Xfce Terminal).
+	2. Jalankan command `proot-distro login ubuntu` (maka anda telah berada di lingkungan PRoot-Ubuntu **`root@ubuntu:~#`**). 
+	3. Jalankan 9router dengan command: `9router`, dan buka interface 9router dengan **Web UI (Open in Browser)**
+	4. Anda akan mendapatkan URL untuk dibuka pada browser berupa `http://localhost:20128/dashboard` atau `http://127.0.0.1:20128/dashboard`
+	5. Masuk ke menu **CLI Tools**, pilih **OpenCode**, dan Klik **Manual Config**
+	6. Salin Script untuk konfigurasi, 
+	7. Buka folder `home` melalui **Thunar File Manager** dan masuk ke folder `.config/opencode`
+	8. Buat file baru dengan cara: klik kanan _(tap 2 jari)_ pada area kosong didalam folder, "`Create Document`" > "`Empty File`" dan buat nama **`opencode.json`** 
+	9. Buka file tersebut dengan Geany/Mousepad/Fatherpad(_default_), dan **Tempel** Script yang sebelumnya anda salin.
+	10. Simpan file. dan _reload_ halaman 9router yang anda buka pada browser.
+> 9router dan OpenCode telah terkoneksi. anda telah dapat mengatur setup Agent OpenCode dengan 9router.
+
+
+### Membuat Shortcut untuk Terminal PRoot
 Buat pintasan (Shortcut) untuk membuka terminal PRoot di Desktop secara instant, jalankan Command berikut di `Xfce4 Terminal` atau Langsung dari `Termux` (di luar PRoot):
 **`~ $`**
 ```
@@ -339,6 +355,7 @@ chmod +x ~/Desktop/proot-home.desktop
 > membuat terminal PRoot berjalan di lingkungan folder `home` Desktop Xfce4 Termux:X11.
 
 
+
 ---
 ## 7. Pintasan AI Agent di Desktop Xfce4
 
@@ -380,6 +397,7 @@ chmod +x ~/Desktop/AI-Agent.desktop
 
 ```
 _Port untuk membuka 9router adalah: `http://localhost:20128` atau `http://127.0.0.1:20128`_
+
 
 ---
 ## 8. Pembuatan Pintasan Langsung (Shortcut) di Homescreen Android
