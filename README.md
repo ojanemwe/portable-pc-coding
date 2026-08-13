@@ -166,7 +166,7 @@ chmod +x ~/Desktop/shutdown.desktop
 
 ```
 
-> **CATATAN KANTORAN:** _Bagi pengguna yang hanya membutuhkan fungsi pekerjaan kantor dan desain ringan, jalankan Tahap 5 lalu berhenti. Anda tidak perlu melanjutkan ke Tahap 6 dan seterusnya._
+> **CATATAN KANTORAN:** _Bagi pengguna yang hanya membutuhkan fungsi **pekerjaan kantor** dan **desain ringan**, jalankan Tahap 5 dan **langsung ke Tahap 8**. Anda tidak perlu melanjutkan ke Tahap 6 dan seterusnya._
 > 
 >   
 
