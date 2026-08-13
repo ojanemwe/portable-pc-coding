@@ -109,7 +109,7 @@ Buat skrip utama Shortcut desktop yang telah dimodifikasi untuk resolusi otomati
 	export QT_QUICK_BACKEND=software
 
 	# Eksekusi resolusi 16:9 (Landscape) di latar belakang
-	(sleep 4 && xrandr -s 1280x720) &
+	# (sleep 4 && xrandr -s 1280x720) &
 
 	# Jalankan XFCE4 tanpa peringatan DBUS dan sistem
 	if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
