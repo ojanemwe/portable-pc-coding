@@ -378,3 +378,18 @@ chmod +x ~/.shortcuts/Mulai-Desktop.sh
 5.  Pilih **Termux:Widget** dan letakkan di layar utama.
 
 6.  Ketuk **Mulai-Desktop.sh** pada widget untuk langsung masuk ke lingkungan kerja Xfce4.
+
+---
+---
+
+Bonus:
+> **Skrip Pintasan Terminal Opsional (Jika Dibuat)**
+> Jika membuat pintasan khusus untuk langsung masuk ke direktori projects via terminal PRoot, ubah target perpindahan foldernya:
+```
+cat << 'EOF' > ~/start-proot-projects.sh
+#!/bin/bash
+proot-distro login ubuntu -- bash -c "cd /root/projects; exec bash"
+EOF
+
+chmod +x ~/start-proot-projects.sh
+```
