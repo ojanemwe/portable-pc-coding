@@ -292,16 +292,25 @@ npm install -g 9router opencode-ai
 **F. Menghubungkan 9router dengan OpenCode**
 
 Karena kita telah melakukan Symlink folder `.config` maka Kita dapat melakukan konfigurasi melalui `Thunar File Manager` pada desktop mode (`~$ pc` > `[Enter]`) dengan cara:
-	1. Buka **Xfce Terminal** (Aplication > System > Xfce Terminal).
-	2. Jalankan command `proot-distro login ubuntu` (maka anda telah berada di lingkungan PRoot-Ubuntu **`root@ubuntu:~#`**). 
-	3. Jalankan 9router dengan command: `9router`, dan buka interface 9router dengan **Web UI (Open in Browser)**
-	4. Anda akan mendapatkan URL untuk dibuka pada browser berupa `http://localhost:20128/dashboard` atau `http://127.0.0.1:20128/dashboard`
-	5. Masuk ke menu **CLI Tools**, pilih **OpenCode**, dan Klik **Manual Config**
-	6. Salin Script untuk konfigurasi, 
-	7. Buka folder `home` melalui **Thunar File Manager** dan masuk ke folder `.config/opencode`
-	8. Buat file baru dengan cara: klik kanan _(tap 2 jari)_ pada area kosong didalam folder, "`Create Document`" > "`Empty File`" dan buat nama **`opencode.json`** 
-	9. Buka file tersebut dengan Geany/Mousepad/Fatherpad(_default_), dan **Tempel** Script yang sebelumnya anda salin.
-	10. Simpan file. dan _reload_ halaman 9router yang anda buka pada browser.
+1. Buka **Xfce Terminal** (Aplication > System > Xfce Terminal).
+
+2. Jalankan command `proot-distro login ubuntu` (maka anda telah berada di lingkungan PRoot-Ubuntu **`root@ubuntu:~#`**). 
+
+3. Jalankan 9router dengan command: `9router`, dan buka interface 9router dengan **Web UI (Open in Browser)**
+
+4. Anda akan mendapatkan URL untuk dibuka pada browser berupa `http://localhost:20128/dashboard` atau `http://127.0.0.1:20128/dashboard`
+
+5. Masuk ke menu **CLI Tools**, pilih **OpenCode**, dan Klik **Manual Config**
+
+6. Salin Script untuk konfigurasi, 
+
+7. Buka folder `home` melalui **Thunar File Manager** dan masuk ke folder `.config/opencode`
+
+8. Buat file baru dengan cara: klik kanan _(tap 2 jari)_ pada area kosong didalam folder, "`Create Document`" > "`Empty File`" dan buat nama **`opencode.json`** 
+
+9. Buka file tersebut dengan Geany/Mousepad/Fatherpad(_default_), dan **Tempel** Script yang sebelumnya anda salin.
+
+10. Simpan file. dan _reload_ halaman 9router yang anda buka pada browser.
 > 9router dan OpenCode telah terkoneksi. anda telah dapat mengatur setup Agent OpenCode dengan 9router.
 
 
