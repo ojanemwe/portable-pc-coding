@@ -203,6 +203,7 @@ rm -rf PhotoGIMP
 ---
 ## 6. Instalasi Lingkungan Vibe Coding (Web App Developer)
 Pada bagian ini anda perlu memahami dimana _Command_ akan ditempelkan karena di tahap ini kita akan menggunakan 2 terminal. berikut adalah perbedaan tanda yang akan saya berikan:
+
 **[TERMUX / XFCE]** = **`~ $`** _command_
 
 **[UBUNTU / PRoot]** = **`root@ubuntu:~#`** _command_
