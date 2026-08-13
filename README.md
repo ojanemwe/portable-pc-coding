@@ -224,7 +224,7 @@ Persiapkan folder untuk "9router" & folder "konfigurasi OpenCode", serta folder 
 mkdir -p ~/.9router ~/.config ~/projects
 
 ```
-> ini akan membuat folder `home/.9router`, `home/.config/opencode`, dan folder `home/projects` untuk keperluan Agentic/Vibe Coding. sehingga memudahkan untuk konfigurasi manual dengan GUI Desktop Xfce4.
+> ini akan memeriksa ketersediaan atau membuat folder `home/.9router`, `home/.config`, dan folder `home/projects` untuk keperluan Agentic/Vibe Coding. sehingga memudahkan untuk konfigurasi manual dengan GUI Desktop Xfce4.
 
 **B. Install PRoot dan Masuk ke Lingkungan Ubuntu**
 Install dan Jalankan Setup Ubuntu dengan PRoot Distro untuk pemasangan AI-CLI dan 9router. Pasang dan masuk ke lingkungan Ubuntu dengan command:
@@ -256,7 +256,7 @@ ln -s /data/data/com.termux/files/home /root/home
 ln -s /data/data/com.termux/files/home/projects /root/projects
 
 ```
-> Pastikan dengan command `ls -la` dan anda dapat melihat folder `.9router` dan `home` berwarna hijau
+> Pastikan dengan command `ls -la` dan anda dapat melihat folder `.config`, `.9router`, `projects` dan `home` berwarna hijau
 
 **E. Install Paket Global** (Di dalam PRoot Ubuntu):
  Instal 9router dan OpenCode di Dalam PRoot Ubuntu:
@@ -264,9 +264,11 @@ ln -s /data/data/com.termux/files/home/projects /root/projects
 npm install -g 9router opencode-ai
 
 ```
+> anda bisa keluar dari terminal PRoot dengan command `exit`, lalu enter
+>
 
 ### Membuat Shortcut Terminal PRoot
-Buat pintasan (Shortcut) untuk membuka terminal PRoot di Desktop secara instant, jalankan Command berikut di `Xfce4 Terminal` atau Langsung dari `Termux`:
+Buat pintasan (Shortcut) untuk membuka terminal PRoot di Desktop secara instant, jalankan Command berikut di `Xfce4 Terminal` atau Langsung dari `Termux` (di luar PRoot):
 ```
 mkdir -p ~/Desktop
 
@@ -286,7 +288,7 @@ chmod +x ~/Desktop/Terminal-PRoot.desktop
 ```
 > Skrip diatas akan membuat file `Terminal-PRoot.desktop` yang bisa di klik. dan langsung bekerja dalam direktori `root` lingkungan PRoot distro Ubuntu.
 
-Jika ingin Langsung menjalankan **Terminal PRoot distro pada home**, kita membutuhkan file `.sh` untuk mengatur `--workdir` berjalan pada home. Jalankan script berikut pada Termux atau Xfce4 Terminal di mode desktop:
+Jika ingin Langsung menjalankan **Terminal PRoot distro pada home**, kita membutuhkan file `.sh` untuk mengatur `--workdir` berjalan pada home. Jalankan script berikut pada **`Termux`/`Xfce4 Terminal`** di mode desktop (di Luar PRoot Ubuntu):
 ```
 cat << 'EOF' > ~/start-proot-home.sh
 #!/bin/bash
@@ -296,7 +298,7 @@ EOF
 chmod +x ~/start-proot-home.sh
 
 ```
-Buat file `.desktop`-nya (Termux / Terminal Xfce4):
+Buat file `.desktop`-nya (**`Termux`/`Xfce4 Terminal`**):
 ```
 cat << 'EOF' > ~/Desktop/proot-home.desktop
 [Desktop Entry]
