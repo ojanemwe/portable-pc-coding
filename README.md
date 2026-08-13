@@ -73,38 +73,38 @@ Buat skrip utama Shortcut desktop yang telah dimodifikasi untuk resolusi otomati
 	rm -f /data/data/com.termux/files/usr/var/run/dbus/pid
 	gpgconf --kill gpg-agent 2>/dev/null
 
-	# Pastikan symlink penyimpanan internal ada[cite: 1]
+	# Pastikan symlink penyimpanan internal ada
 	if [ ! -d "$HOME/storage" ]; then
 	    termux-setup-storage
 	fi
 
-	# Jalankan PulseAudio[cite: 1]
+	# Jalankan PulseAudio
 	pulseaudio --start --load="module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1" --exit-idle-time=-1
 
 	sleep 1
 
-	# Mulai server X[cite: 1]
+	# Mulai server X
 	export XDG_RUNTIME_DIR=${TMPDIR}
 	termux-x11 :0 >/dev/null &
 
 	sleep 3
 
-	# Buka aplikasi Termux:X11 di Android[cite: 1]
+	# Buka aplikasi Termux:X11 di Android
 	am start --user 0 -n com.termux.x11/com.termux.x11.MainActivity > /dev/null 2>&1
 
 	sleep 1
 
-	# Atur variabel lingkungan[cite: 1]
+	# Atur variabel lingkungan
 	export DISPLAY=:0
 	export PULSE_SERVER=127.0.0.1
 
-	# Pengaturan DPI dan Skala[cite: 1]
+	# Pengaturan DPI dan Skala
 	xrdb -merge <<< "Xft.dpi: 144"
 	export GDK_SCALE=2
 	export GDK_DPI_SCALE=0.75
 	export XCURSOR_SIZE=40
 
-	# Nonaktifkan GPU untuk QtWebEngine[cite: 1]
+	# Nonaktifkan GPU untuk QtWebEngine
 	export QTWEBENGINE_DISABLE_GPU=1
 	export QT_QUICK_BACKEND=software
 
