@@ -221,7 +221,7 @@ pkg install code-oss proot-distro -y
 **A. Persiapkan folder untuk konfigurasi** (Di Termux Native):
 Persiapkan folder untuk "9router" & folder "konfigurasi OpenCode", serta folder "Projects" untuk bekerja dengan AI-CLI dengan Command:
 ```
-mkdir -p ~/.9router ~/.config/opencode ~/projects
+mkdir -p ~/.9router ~/.config ~/projects
 
 ```
 > ini akan membuat folder `home/.9router`, `home/.config/opencode`, dan folder `home/projects` untuk keperluan Agentic/Vibe Coding. sehingga memudahkan untuk konfigurasi manual dengan GUI Desktop Xfce4.
@@ -246,12 +246,15 @@ curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && apt install -y nod
 
 **D. Buat Symlink Konfigurasi & Home** (Di dalam PRoot Ubuntu):
 ```
-mkdir -p /root/.config
-mkdir -p /root/.config/opencode
-mkdir -p /root/home
+# Hapus folder/symlink lama jika ada
+rm -rf /root/.config /root/.9router /root/home /root/projects
+
+# Buat symlink langsung ke direktori Termux
+ln -s /data/data/com.termux/files/home/.config /root/.config
 ln -s /data/data/com.termux/files/home/.9router /root/.9router
-ln -s /data/data/com.termux/files/home/.config/opencode /root/.config/opencode
 ln -s /data/data/com.termux/files/home /root/home
+ln -s /data/data/com.termux/files/home/projects /root/projects
+
 ```
 > Pastikan dengan command `ls -la` dan anda dapat melihat folder `.9router` dan `home` berwarna hijau
 
@@ -326,7 +329,7 @@ cat << 'EOF' > ~/start-ai.sh
 mkdir -p ~/projects
 
 # 2. Eksekusi masuk PRoot, pindah folder, jalankan 9router & opencode
-proot-distro login ubuntu -- bash -c "cd /root/home/projects && 9router & sleep 2 && opencode; exec bash"
+proot-distro login ubuntu -- bash -c "cd /root/projects && 9router & sleep 2 && opencode; exec bash"
 EOF
 
 # Beri izin eksekusi
