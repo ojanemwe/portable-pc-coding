@@ -37,10 +37,6 @@ Langkah ini menyiapkan pondasi aplikasi dan perizinan sistem Android.
 
 Buka aplikasi Termux dan jalankan perintah berikut secara berurutan untuk memasang repositori dasar dan desktop Xfce4:
 
-  
-
-Bash
-
 ```
 pkg update && pkg upgrade -y
 pkg install tur-repo x11-repo -y
@@ -53,9 +49,7 @@ termux-setup-storage
 ---
 ## 3. Konfigurasi Launcher Script (Resolusi 16:9 & Clean Terminal)
 
-Buat skrip utama peluncur desktop yang telah dimodifikasi untuk resolusi otomatis dan penghilangan _error output_.
-
-  
+Buat skrip utama Shortcut desktop yang telah dimodifikasi untuk resolusi otomatis dan penghilangan _error output_.
 
 1.  Buat berkas peluncur:
 	```
@@ -126,8 +120,6 @@ Buat skrip utama peluncur desktop yang telah dimodifikasi untuk resolusi otomati
 
 3.  Simpan (`Ctrl+O`, `Enter`, `Ctrl+X`).
     
-      
-    
 4.  Beri izin eksekusi dan buat alias agar mudah dipanggil:
 	```
 	chmod +x ~/pc
@@ -166,7 +158,7 @@ chmod +x ~/Desktop/shutdown.desktop
 
 ```
 
-> **CATATAN KANTORAN:** _Bagi pengguna yang hanya membutuhkan fungsi **pekerjaan kantor** dan **desain ringan**, jalankan Tahap 5 dan **langsung ke Tahap 8**. Anda tidak perlu melanjutkan ke Tahap 6 dan seterusnya._
+> **CATATAN KANTORAN:** _Bagi pengguna yang hanya membutuhkan fungsi **pekerjaan kantor** dan **desain ringan**, jalankan Tahap 5 dan **langsung ke Tahap 8**. Anda tidak perlu menerapkan Tahap 6 dan 7._
 > 
 >   
 
@@ -226,8 +218,8 @@ pkg install code-oss proot-distro -y
 > **Code-oss** berbasis Electron yang membutuhkan RAM 400 MB – 700 MB+
 
 ### AI CLI Agent & 9router
-**A. Di Termux Native** (Persiapkan folder untuk konfigurasi):
-Persiapkan folder untuk 9router & folder konfigurasi OpenCode, serta folder Projects untuk bekerja dengan AI-CLI dengan Command:
+**A. Persiapkan folder untuk konfigurasi** (Di Termux Native):
+Persiapkan folder untuk "9router" & folder "konfigurasi OpenCode", serta folder "Projects" untuk bekerja dengan AI-CLI dengan Command:
 ```
 mkdir -p ~/.9router ~/.config/opencode ~/projects
 
@@ -235,7 +227,7 @@ mkdir -p ~/.9router ~/.config/opencode ~/projects
 > ini akan membuat folder `home/.9router`, `home/.config/opencode`, dan folder `home/projects` untuk keperluan Agentic/Vibe Coding. sehingga memudahkan untuk konfigurasi manual dengan GUI Desktop Xfce4.
 
 **B. Install PRoot dan Masuk ke Lingkungan Ubuntu**
-Install dan Jalankan Setup Ubuntu dengan PRoot Distro untuk menginstall AI-CLI dan 9router. Pasang dan masuk ke lingkungan Ubuntu dengan command:
+Install dan Jalankan Setup Ubuntu dengan PRoot Distro untuk pemasangan AI-CLI dan 9router. Pasang dan masuk ke lingkungan Ubuntu dengan command:
 ```
 proot-distro install ubuntu
 proot-distro login ubuntu
@@ -255,6 +247,8 @@ curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && apt install -y nod
 **D. Buat Symlink Konfigurasi & Home** (Di dalam PRoot Ubuntu):
 ```
 mkdir -p /root/.config
+mkdir -p /root/.config/opencode
+mkdir -p /root/home
 ln -s /data/data/com.termux/files/home/.9router /root/.9router
 ln -s /data/data/com.termux/files/home/.config/opencode /root/.config/opencode
 ln -s /data/data/com.termux/files/home /root/home
