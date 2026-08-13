@@ -1,7 +1,5 @@
 # portable-pc-coding - Tutorial Lengkap
-
-
-# Setup Portable PC (Xfce4 di Android) untuk Agentic/Vibe Coding
+# **Setup Portable PC (Xfce4 di Android) untuk Agentic/Vibe Coding** (Tanpa Root)
 
 ## Spesifikasi & Kebutuhan Penyimpanan
 
@@ -203,15 +201,22 @@ rm -rf PhotoGIMP
     
 ---
 ## 6. Instalasi Lingkungan Vibe Coding (Web App Developer)
+Pada bagian ini anda perlu memahami dimana _Command_ akan ditempelkan karena di tahap ini kita akan menggunakan 2 terminal. berikut adalah perbedaan tanda yang akan saya berikan:
+**[TERMUX / XFCE]** = **`~ $`** _command_
+**[UBUNTU / PRoot]** = **`root@ubuntu:~#`** _command_
+> untuk keluar dari PRoot Terminal gunakan command `exit`.
+
 
 ### Editor Kode
 
 Instal **Geany** sebagai editor utama yang sangat ringan *(penggunaan RAM < 50 MB)* dan **Proot Distro** sebagai wadah untuk menjalankan AI CLI.
+**`~ $`**
 ```
 pkg install geany proot-distro -y
 
 ```
 *Optional: **Code-oss** (Versi Open Source **VSCode**) , gantilah `geany` dengan `code-oss` sehingga menjadi:*
+**`~ $`**
 ```
 pkg install code-oss proot-distro -y
 ```
@@ -220,6 +225,7 @@ pkg install code-oss proot-distro -y
 ### AI CLI Agent & 9router
 **A. Persiapkan folder untuk konfigurasi** (Di Termux Native):
 Persiapkan folder untuk "9router" & folder "konfigurasi OpenCode", serta folder "Projects" untuk bekerja dengan AI-CLI dengan Command:
+**`~ $`**
 ```
 mkdir -p ~/.9router ~/.config ~/projects
 
@@ -228,6 +234,7 @@ mkdir -p ~/.9router ~/.config ~/projects
 
 **B. Install PRoot dan Masuk ke Lingkungan Ubuntu**
 Install dan Jalankan Setup Ubuntu dengan PRoot Distro untuk pemasangan AI-CLI dan 9router. Pasang dan masuk ke lingkungan Ubuntu dengan command:
+**`~ $`**
 ```
 proot-distro install ubuntu
 proot-distro login ubuntu
@@ -237,6 +244,7 @@ proot-distro login ubuntu
 
 
 **C. Install Node.js LTS** (Di dalam PRoot Ubuntu):
+**`root@ubuntu:~#`**
 ```
 apt update && apt upgrade -y
 apt install curl git -y
@@ -245,6 +253,10 @@ curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && apt install -y nod
 ```
 
 **D. Buat Symlink Konfigurasi & Home** (Di dalam PRoot Ubuntu):
+pastikan bahwa direktori home anda terletak di `/data/data/com.termux/files/home/` karna letak direktori bisa saja berbeda tergantung jenis device.
+Periksa melalui **Thunar File Manager** (masuk ke mode desktop terlebih dahulu `**~ $**` `_pc_`, buka folder "Home" yang ada di desktop)!
+Jika berbeda sesuaikanlah baris command dibawah ini. Jika sama, maka bisa langsung menggunakan Command berikut:
+**`root@ubuntu:~#`**
 ```
 # Hapus folder/symlink lama jika ada
 rm -rf /root/.config /root/.9router /root/home /root/projects
@@ -256,19 +268,21 @@ ln -s /data/data/com.termux/files/home /root/home
 ln -s /data/data/com.termux/files/home/projects /root/projects
 
 ```
-> Pastikan dengan command `ls -la` dan anda dapat melihat folder `.config`, `.9router`, `projects` dan `home` berwarna hijau
+> Pastikan dengan command `ls -la` dan anda dapat melihat folder `.config`, `.9router`, `projects` dan `home` memiliki tanda `-> [folder tujuan]`
 
 **E. Install Paket Global** (Di dalam PRoot Ubuntu):
  Instal 9router dan OpenCode di Dalam PRoot Ubuntu:
+ **`root@ubuntu:~#`**
 ```
 npm install -g 9router opencode-ai
 
 ```
-> anda bisa keluar dari terminal PRoot dengan command `exit`, lalu enter
+> anda bisa keluar dari terminal PRoot terlebih dahulu dengan command `exit`, lalu `[Enter]`
 >
 
 ### Membuat Shortcut Terminal PRoot
 Buat pintasan (Shortcut) untuk membuka terminal PRoot di Desktop secara instant, jalankan Command berikut di `Xfce4 Terminal` atau Langsung dari `Termux` (di luar PRoot):
+**`~ $`**
 ```
 mkdir -p ~/Desktop
 
@@ -289,6 +303,7 @@ chmod +x ~/Desktop/Terminal-PRoot.desktop
 > Skrip diatas akan membuat file `Terminal-PRoot.desktop` yang bisa di klik. dan langsung bekerja dalam direktori `root` lingkungan PRoot distro Ubuntu.
 
 Jika ingin Langsung menjalankan **Terminal PRoot distro pada home**, kita membutuhkan file `.sh` untuk mengatur `--workdir` berjalan pada home. Jalankan script berikut pada **`Termux`/`Xfce4 Terminal`** di mode desktop (di Luar PRoot Ubuntu):
+**`~ $`**
 ```
 cat << 'EOF' > ~/start-proot-home.sh
 #!/bin/bash
@@ -299,6 +314,7 @@ chmod +x ~/start-proot-home.sh
 
 ```
 Buat file `.desktop`-nya (**`Termux`/`Xfce4 Terminal`**):
+**`~ $`**
 ```
 cat << 'EOF' > ~/Desktop/proot-home.desktop
 [Desktop Entry]
@@ -323,6 +339,7 @@ chmod +x ~/Desktop/proot-home.desktop
 
 Buat peluncur di desktop yang akan menyalakan `9router` secara otomatis dan mengeksekusi `Open Code` di dalam terminal PRoot.
 **A. Jalankan perintah ini di terminal `Termux`/`Xfce4 Terminal` (luar PRoot)**:
+**`~ $`**
 ```
 cat << 'EOF' > ~/start-ai.sh
 #!/bin/bash
@@ -340,6 +357,7 @@ chmod +x ~/start-ai.sh
 ```
 **B. Buat File `.desktop` Menuju Skrip Tersebut**
 Buat file `.desktop` yang hanya bertugas memanggil skrip `~/start-ai.sh` **(diluar PRoot)**:
+**`~ $`**
 ```
 cat << 'EOF' > ~/Desktop/AI-Agent.desktop
 [Desktop Entry]
@@ -366,6 +384,7 @@ Langkah ini membuat akses satu kali ketuk dari layar utama _smartphone_ langsung
 1.  Buka F-Droid dan instal aplikasi **Termux:Widget**.
 
 2.  Buka Termux, buat direktori pintasan, dan buat skrip eksekutor:
+**`~ $`**
 ```
 mkdir -p ~/.shortcuts
 echo -e '#!/data/data/com.termux/files/usr/bin/bash\npc' > ~/.shortcuts/Mulai-Desktop.sh
