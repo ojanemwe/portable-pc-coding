@@ -1,7 +1,7 @@
 # portable-pc-coding - Tutorial Lengkap
 
 
-# Setup Portable PC (Xfce4 di Android) untuk Vibe Coding
+# Setup Portable PC (Xfce4 di Android) untuk Agentic/Vibe Coding
 
 ## Spesifikasi & Kebutuhan Penyimpanan
 
@@ -214,79 +214,149 @@ rm -rf PhotoGIMP
 
 ### Editor Kode
 
-Instal Geany sebagai editor utama yang sangat ringan. Code-OSS ditambahkan sebagai opsi opsional untuk spesifikasi perangkat tinggi:
+Instal **Geany** sebagai editor utama yang sangat ringan *(penggunaan RAM < 50 MB)* dan **Proot Distro** sebagai wadah untuk menjalankan AI CLI.
 ```
-pkg install geany -y
+pkg install geany proot-distro -y
 
 ```
-Code-oss (Versi Open Source VSCode) (Optional):
+*Optional: **Code-oss** (Versi Open Source **VSCode**) , gantilah `geany` dengan `code-oss` sehingga menjadi:*
 ```
-pkg install code-oss -y
-
+pkg install code-oss proot-distro -y
 ```
+> **Code-oss** berbasis Electron yang membutuhkan RAM 400 MB – 700 MB+
 
 ### AI CLI Agent & 9router
-
-Instal Node.js dan pasang `9router` (secara global), `hermes-agent`, dan `opencode-ai`:
-
+**A. Di Termux Native** (Persiapkan folder untuk konfigurasi):
+Persiapkan folder untuk 9router & folder konfigurasi OpenCode, serta folder Projects untuk bekerja dengan AI-CLI dengan Command:
 ```
-pkg install nodejs -y
-```
-install 9router+Hermes:
-```
-npm install -g 9router
-curl -fsSL https://raw.githubusercontent.com/AbuZar-Ansarii/Hermes-Agent-On-Android/main/nous_agent.sh | bash
+mkdir -p ~/.9router ~/.config/opencode ~/projects
 
 ```
-> jika 9router gagal, gunakan `npm install -g git+https://github.com/decolua/9router.git`
+> ini akan membuat folder `home/.9router`, `home/.config/opencode`, dan folder `home/projects` untuk keperluan Agentic/Vibe Coding. sehingga memudahkan untuk konfigurasi manual dengan GUI Desktop Xfce4.
 
-Jika ingin menggunakan OpenCode, gantilah `Hermes Agent` dengan command untuk menginstall `OpenCode`:
+**B. Install PRoot dan Masuk ke Lingkungan Ubuntu**
+Install dan Jalankan Setup Ubuntu dengan PRoot Distro untuk menginstall AI-CLI dan 9router. Pasang dan masuk ke lingkungan Ubuntu dengan command:
 ```
-npm install -g opencode-ai
+proot-distro install ubuntu
+proot-distro login ubuntu
+
+```
+> Selalu gunakan command `proot-distro login ubuntu` untuk memulai menjalankan **terminal PRoot** untuk memulai Vibe Coding *(9router + OpenCode)*
+
+
+**C. Install Node.js LTS** (Di dalam PRoot Ubuntu):
+```
+apt update && apt upgrade -y
+apt install curl git -y
+curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
+apt install -y nodejs
 
 ```
 
+**D. Buat Symlink Konfigurasi & Home** (Di dalam PRoot Ubuntu):
+```
+mkdir -p /root/.config
+ln -s /data/data/com.termux/files/home/.9router /root/.9router
+ln -s /data/data/com.termux/files/home/.config/opencode /root/.config/opencode
+ln -s /data/data/com.termux/files/home /root/home
+```
+> Pastikan dengan command `ls -la` dan anda dapat melihat folder `.9router` dan `home` berwarna hijau
+
+**E. Install Paket Global** (Di dalam PRoot Ubuntu):
+ Instal 9router dan OpenCode di Dalam PRoot Ubuntu:
+```
+npm install -g 9router opencode-ai
+
+```
+
+### Membuat Shortcut Terminal PRoot
+Buat pintasan (Shortcut) untuk membuka terminal PRoot di Desktop secara instant, jalankan Command berikut di `Xfce4 Terminal` atau Langsung dari `Termux`:
+```
+mkdir -p ~/Desktop
+
+cat << 'EOF' > ~/Desktop/Terminal-PRoot.desktop
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Terminal PRoot
+Comment=Buka terminal dan otomatis login ke PRoot Ubuntu
+Exec=xfce4-terminal -e "proot-distro login ubuntu"
+Icon=utilities-terminal
+Terminal=false
+Categories=System;TerminalEmulator;
+EOF
+
+chmod +x ~/Desktop/Terminal-PRoot.desktop
+```
+> Skrip diatas akan membuat file `Terminal-PRoot.desktop` yang bisa di klik. dan langsung bekerja dalam direktori `root` lingkungan PRoot distro Ubuntu.
+
+Jika ingin Langsung menjalankan **Terminal PRoot distro pada home**, kita membutuhkan file `.sh` untuk mengatur `--workdir` berjalan pada home. Jalankan script berikut pada Termux atau Xfce4 Terminal di mode desktop:
+```
+cat << 'EOF' > ~/start-proot-home.sh
+#!/bin/bash
+proot-distro login ubuntu -- bash -c "cd /root/home; exec bash"
+EOF
+
+chmod +x ~/start-proot-home.sh
+
+```
+Buat file `.desktop`-nya (Termux / Terminal Xfce4):
+```
+cat << 'EOF' > ~/Desktop/proot-home.desktop
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=PRoot Home Terminal
+Exec=xfce4-terminal -e "/data/data/com.termux/files/home/start-proot-home.sh"
+Icon=utilities-terminal
+Terminal=false
+Categories=System;TerminalEmulator;
+EOF
+
+chmod +x ~/Desktop/proot-home.desktop
+
+```
+
+> membuat terminal PRoot berjalan di lingkungan folder `home` Desktop Xfce4 Termux:X11.
 
 
 ---
 ## 7. Pintasan AI Agent di Desktop Xfce4
 
-Buat peluncur di desktop yang akan menyalakan `9router` secara otomatis dan mengeksekusi `Hermes Agent` di dalam terminal Xfce.
+Buat peluncur di desktop yang akan menyalakan `9router` secara otomatis dan mengeksekusi `Open Code` di dalam terminal PRoot.
+**A. Jalankan perintah ini di terminal `Termux`/`Xfce4 Terminal` (luar PRoot)**:
 ```
-nano ~/Desktop/AI-Agent.desktop
+cat << 'EOF' > ~/start-ai.sh
+#!/bin/bash
+
+# 1. Pastikan direktori projects ada di Termux
+mkdir -p ~/projects
+
+# 2. Eksekusi masuk PRoot, pindah folder, jalankan 9router & opencode
+proot-distro login ubuntu -- bash -c "cd /root/home/projects && 9router & sleep 2 && opencode; exec bash"
+EOF
+
+# Beri izin eksekusi
+chmod +x ~/start-ai.sh
 
 ```
-
-Tempelkan kode berikut:
+**B. Buat File `.desktop` Menuju Skrip Tersebut**
+Buat file `.desktop` yang hanya bertugas memanggil skrip `~/start-ai.sh` **(diluar PRoot)**:
 ```
+cat << 'EOF' > ~/Desktop/AI-Agent.desktop
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name=AI Agent (Hermes/OpenCode)
-Comment=Jalankan 9router dan CLI Agent
-Exec=xfce4-terminal --title="AI Agent" -e "bash -c 'pgrep -f 9router > /dev/null || 9router & sleep 2; hermes; exec bash'"
+Name=AI Agent Workspace
+Comment=Menjalankan AI Agent Workspace
+Exec=xfce4-terminal --title="AI Agent" -e "/data/data/com.termux/files/home/start-ai.sh"
 Icon=utilities-terminal
 Terminal=false
 Categories=Development;
-StartupNotify=true
-```
+EOF
 
-_(Ganti kata `hermes` menjadi `opencode` jika ingin menggunakan OpenCode)._
-
-Simpan, lalu berikan izin akses:
-```
 chmod +x ~/Desktop/AI-Agent.desktop
 
-```
-
-### Jika ingin melakukan update pada 9router, lakukan hal berikut:
-Gunakan Terminal Baru (Rekomendasi):
-- Tutup jendela CLI AI Agent tersebut sepenuhnya.
-- Buka terminal standar dari menu aplikasi (Applications > System > Xfce Terminal).
-- Matikan proses lama dan jalankan instalasi ulang:
-```
-pkill -f 9router
-npm install -g git+https://github.com/decolua/9router.git
 ```
 _Port untuk membuka 9router adalah: `http://localhost:20128` atau `http://127.0.0.1:20128`_
 
