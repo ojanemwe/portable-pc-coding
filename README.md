@@ -9,7 +9,7 @@
 
 -   **Spesifikasi Rekomendasi:** RAM 6GB+, CPU Snapdragon 600-series ke atas (untuk _multitasking_ dan Code-OSS).
 
--   **Total Penyimpanan (Storage):** ~2.5 GB hingga 3.5 GB (siapkan ruang kosong minimal 5 GB untuk stabilitas).
+-   **Total Penyimpanan (Storage):** ~2.5 GB hingga 4 GB (siapkan ruang kosong minimal 5 GB - 10 GB untuk untuk menampung cache NPM dan stabilitas).
 
 
 
@@ -248,8 +248,7 @@ proot-distro login ubuntu
 ```
 apt update && apt upgrade -y
 apt install curl git -y
-curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
-apt install -y nodejs
+curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && apt install -y nodejs
 
 ```
 
