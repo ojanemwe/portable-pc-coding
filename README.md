@@ -205,6 +205,7 @@ Pada bagian ini anda perlu memahami dimana _Command_ akan ditempelkan karena di 
 **[TERMUX / XFCE]** = **`~ $`** _command_
 **[UBUNTU / PRoot]** = **`root@ubuntu:~#`** _command_
 > untuk keluar dari PRoot Terminal gunakan command `exit`.
+> terminal bisa saja menuliskan **`root@localhost:~#`** keduanya sama saja.
 
 
 ### Editor Kode
