@@ -229,6 +229,7 @@ pkg install code-oss proot-distro -y
 
 ### AI CLI Agent & 9router
 **A. Persiapkan folder untuk konfigurasi** (Di Termux Native):
+
 Persiapkan folder untuk "9router" & folder "konfigurasi OpenCode", serta folder "Projects" untuk bekerja dengan AI-CLI dengan Command:
 **`~ $`**
 ```
@@ -238,6 +239,7 @@ mkdir -p ~/.9router ~/.config ~/projects
 > ini akan memeriksa ketersediaan atau membuat folder `home/.9router`, `home/.config`, dan folder `home/projects` untuk keperluan Agentic/Vibe Coding. sehingga memudahkan untuk konfigurasi manual dengan GUI Desktop Xfce4.
 
 **B. Install PRoot dan Masuk ke Lingkungan Ubuntu**
+
 Install dan Jalankan Setup Ubuntu dengan PRoot Distro untuk pemasangan AI-CLI dan 9router. Pasang dan masuk ke lingkungan Ubuntu dengan command:
 **`~ $`**
 ```
@@ -258,8 +260,9 @@ curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && apt install -y nod
 ```
 
 **D. Buat Symlink Konfigurasi & Home** (Di dalam PRoot Ubuntu):
+
 pastikan bahwa direktori home anda terletak di `/data/data/com.termux/files/home/` karna letak direktori bisa saja berbeda tergantung jenis device.
-Periksa melalui **Thunar File Manager** (masuk ke mode desktop terlebih dahulu `**~ $**` `_pc_`, buka folder "Home" yang ada di desktop)!
+Periksa melalui **Thunar File Manager** (masuk ke mode desktop terlebih dahulu **`~ $`** `_pc_`, buka folder "Home" yang ada di desktop)!
 Jika berbeda sesuaikanlah baris command dibawah ini. Jika sama, maka bisa langsung menggunakan Command berikut:
 **`root@ubuntu:~#`**
 ```
@@ -276,8 +279,9 @@ ln -s /data/data/com.termux/files/home/projects /root/projects
 > Pastikan dengan command `ls -la` dan anda dapat melihat folder `.config`, `.9router`, `projects` dan `home` memiliki tanda `-> [folder tujuan]`
 
 **E. Install Paket Global** (Di dalam PRoot Ubuntu):
+ 
  Instal 9router dan OpenCode di Dalam PRoot Ubuntu:
- **`root@ubuntu:~#`**
+**`root@ubuntu:~#`**
 ```
 npm install -g 9router opencode-ai
 
