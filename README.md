@@ -1,4 +1,4 @@
-# portable-pc-coding - Tutorial
+# Portable PC - Kerja & Agentic Coding
 
 # **Setup Portable PC (Xfce4 di Android) untuk Agentic/Vibe Coding** (Tanpa Root)
 
@@ -19,7 +19,7 @@ Langkah ini menyiapkan pondasi aplikasi dan perizinan sistem Android.
 
   
 
-1.  Unduh dan instal F-Droid dari https://f-droid.org/ .
+1.  Unduh dan instal F-Droid dari https://f-droid.org .
 
 2.  Unduh dan instal Termux melalui F-Droid.
     
@@ -230,13 +230,13 @@ pkg install code-oss proot-distro -y
 ### AI CLI Agent & 9router
 **A. Persiapkan folder untuk konfigurasi** (Di Termux Native):
 
-Persiapkan folder untuk "9router" & folder "konfigurasi OpenCode", serta folder "Projects" untuk bekerja dengan AI-CLI dengan Command:
+Persiapkan folder untuk "9router" & folder konfigurasi untuk semua aplikasi yang akan diinstall melalui _PRoot-Ubuntu_ seperti "OpenCode", folder PRoot yang mungkin perlu untuk anda intip dengan GUI Desktop Xfce4 seperti ".local", serta folder "Workspace" untuk bekerja dengan AI-CLI dengan Command:
 **`~ $`**
 ```
-mkdir -p ~/.9router ~/.config ~/projects
+mkdir -p ~/.9router ~/.config ~/.local-proot ~/workspace
 
 ```
-> ini akan memeriksa ketersediaan atau membuat folder `home/.9router`, `home/.config`, dan folder `home/projects` untuk keperluan Agentic/Vibe Coding. sehingga memudahkan untuk konfigurasi manual dengan GUI Desktop Xfce4.
+> ini akan memeriksa ketersediaan atau membuat folder `home/.9router`, `home/.config`, `home/.local-proot`, dan folder `home/workspace` untuk keperluan Agentic/Vibe Coding. sehingga memudahkan untuk konfigurasi manual dengan GUI Desktop Xfce4.
 
 **B. Install PRoot dan Masuk ke Lingkungan Ubuntu**
 
@@ -249,7 +249,24 @@ proot-distro login ubuntu
 ```
 > Selalu gunakan command `proot-distro login ubuntu` untuk memulai menjalankan **terminal PRoot** untuk memulai Vibe Coding *(9router + OpenCode)*
 
+Untuk mempersingkat `proot-distro login ubuntu` menjadi `~$` **`proot`** saja:
 
+**`~ $`**
+```
+mkdir -p ~/bin
+
+cat > ~/bin/proot <<'EOF'
+#!/data/data/com.termux/files/usr/bin/bash
+exec proot-distro login ubuntu
+EOF
+
+chmod +x ~/bin/proot
+
+export PATH="$HOME/bin:$PATH"
+```
+> silahkan coba dengan mengetikkan `proot` pada termux, maka anda akan masuk ke lingkungan PRoot-Ubuntu. `proot-distro login ubuntu` tetap bisa digunakan.
+
+.
 **C. Install Node.js LTS** (Di dalam PRoot Ubuntu):
 **`root@ubuntu:~#`**
 ```
@@ -262,25 +279,30 @@ curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && apt install -y nod
 **D. Buat Symlink Konfigurasi & Home** (Di dalam PRoot Ubuntu):
 
 pastikan bahwa direktori home anda terletak di `/data/data/com.termux/files/home/` karna letak direktori bisa saja berbeda tergantung jenis device.
-Periksa melalui **Thunar File Manager** (masuk ke mode desktop terlebih dahulu **`~ $`** `_pc_`, buka folder "Home" yang ada di desktop)!
+Periksa melalui **Thunar File Manager** (masuk ke mode desktop terlebih dahulu **~$ pc**, buka folder "Home" yang ada di desktop)!
 Jika berbeda sesuaikanlah baris command dibawah ini. Jika sama, maka bisa langsung menggunakan Command berikut:
 **`root@ubuntu:~#`**
 ```
 # Hapus folder/symlink lama jika ada
-rm -rf /root/.config /root/.9router /root/home /root/projects
+rm -rf /root/.config /root/.9router /root/workspace
 
 # Buat symlink langsung ke direktori Termux
 ln -s /data/data/com.termux/files/home/.config /root/.config
 ln -s /data/data/com.termux/files/home/.9router /root/.9router
-ln -s /data/data/com.termux/files/home /root/home
-ln -s /data/data/com.termux/files/home/projects /root/projects
+ln -s /data/data/com.termux/files/home/.local-proot /root/.local
+ln -s /data/data/com.termux/files/home/workspace /root/workspace
+ln -s /data/data/com.termux/files/home/Downloads /root/Downloads
 
 ```
-> Pastikan dengan command `ls -la` dan anda dapat melihat folder `.config`, `.9router`, `projects` dan `home` memiliki tanda `-> [folder tujuan]`
+> untuk pemeriksaan lebih aman, gunakan `ls -ld /root/.config /root/.9router /root/projects`. Seharusnya folder `/root/.config`, `/root/.9router`, `/root/home`, `/root/workspace`, dan `/root/Downloads` memang tidak ada saat awal menggunakan PRoot-distro maka command `rm -rf` tidak akan berdampak.
+
+> Folder `/root/.local` sengaja dibuat tanpa "-proot" karena secara default pemasangan aplikasi akan membaca ".local". Symlink untuk folder `Downloads` juga sengaja saya tambahkan agar ketika bekerja dengan opencode kita dapat meminta AI untuk memeriksa dan bekerja menggunakan file yang kita download pada lingkungan Desktop Xfce4 Native.
+
+> Pastikan dengan command `ls -la` dan anda dapat melihat folder `.config`, `.9router`, `workspace` dan `home` memiliki tanda `-> [folder tujuan]`
 
 **E. Install Paket Global** (Di dalam PRoot Ubuntu):
  
- Instal 9router dan OpenCode di Dalam PRoot Ubuntu:
+ **Instal 9router dan OpenCode** di Dalam PRoot Ubuntu:
 **`root@ubuntu:~#`**
 ```
 npm install -g 9router opencode-ai
@@ -308,9 +330,12 @@ Karena kita telah melakukan Symlink folder `.config` maka Kita dapat melakukan k
 
 8. Buat file baru dengan cara: klik kanan _(tap 2 jari)_ pada area kosong didalam folder, "`Create Document`" > "`Empty File`" dan buat nama **`opencode.json`** 
 
-9. Buka file tersebut dengan Geany/Mousepad/Fatherpad(_default_), dan **Tempel** Script yang sebelumnya anda salin.
+9. Buka file tersebut dengan Geany/Mousepad/Fatherpad(_default_), dan **Tempel** Script yang sebelumnya anda salin lalu sesuaikan dengan provider dan model yang telah anda koneksikan.
 
 10. Simpan file. dan _reload_ halaman 9router yang anda buka pada browser.
+
+> Dari langkah ke-4 anda bisa melakukan koneksi ke Provider dan mengatur model terlebih dahulu, maka cara ke 6 dan seterusnya tidak perlu lagi anda atur karena sudah terdapat daftar yang terhubung.
+
 > 9router dan OpenCode telah terkoneksi. anda telah dapat mengatur setup Agent OpenCode dengan 9router.
 
 
@@ -336,79 +361,87 @@ chmod +x ~/Desktop/Terminal-PRoot.desktop
 ```
 > Skrip diatas akan membuat file `Terminal-PRoot.desktop` yang bisa di klik. dan langsung bekerja dalam direktori `root` lingkungan PRoot distro Ubuntu.
 
-Jika ingin Langsung menjalankan **Terminal PRoot distro pada home**, kita membutuhkan file `.sh` untuk mengatur `--workdir` berjalan pada home. Jalankan script berikut pada **`Termux`/`Xfce4 Terminal`** di mode desktop (di Luar PRoot Ubuntu):
+.
+
+**Optional (TIDAK DIREKOMENDASIKAN jika menjalankan AI):**
+Jika ingin Langsung menjalankan **Terminal PRoot distro pada home**,
+gunakan wrapper dan `--shared-home` dengan script berikut untuk mempersingkat `proot-distro login ubuntu` menjadi `~$` **`ubuntu`** saja:
+
 **`~ $`**
 ```
-cat << 'EOF' > ~/start-proot-home.sh
-#!/bin/bash
-proot-distro login ubuntu -- bash -c "cd /root/home; exec bash"
-EOF
-
-chmod +x ~/start-proot-home.sh
-
+#!/data/data/com.termux/files/usr/bin/bash
+proot-distro login ubuntu --shared-home
 ```
-Buat file `.desktop`-nya (**`Termux`/`Xfce4 Terminal`**):
-**`~ $`**
-```
-cat << 'EOF' > ~/Desktop/proot-home.desktop
-[Desktop Entry]
-Version=1.0
-Type=Application
-Name=PRoot Home Terminal
-Exec=xfce4-terminal -e "/data/data/com.termux/files/home/start-proot-home.sh"
-Icon=utilities-terminal
-Terminal=false
-Categories=System;TerminalEmulator;
-EOF
-
-chmod +x ~/Desktop/proot-home.desktop
-
-```
-
-> membuat terminal PRoot berjalan di lingkungan folder `home` Desktop Xfce4 Termux:X11.
-
-
+> Terminal PRoot-distro akan bekerja di `$HOME` Termux hanya dengan command "ubuntu"
+> > membuat terminal PRoot berjalan di lingkungan folder `home` Desktop Xfce4 Termux:X11 yang juga dapat mengakses data Android anda. **TIDAK DIREKOMENDASIKAN jika menjalankan AI**
 
 ---
 ## 7. Pintasan AI Agent di Desktop Xfce4
 
+### A. Membuka 9router dan OpenCode langsung dari Xfce4 Terminal
+Kita dapat mempersingkat proses untuk membuka 9router dan OpenCode dengan menggunakan Wrapper yang awalnya perlu menulis `~$ proot-distro login ubuntu` (Xfce Terminal) > `root@ubuntu:~# opencode` _(pada PRoot)_
+**menjadi `~$ opencode` saja pada XFce Terminal**. 
+> Pastikan terlebih dahulu bahwa struktur direktori anda adalah: **`/data/data/com.termux/`dst** jika berbeda, maka sesuaikanlah sebelum menjalankannya!
+
+Gunakan command berikut pada Termux / Xfce Terminal:
+
+**`~ $`**
+```
+#!/data/data/com.termux/files/usr/bin/bash
+proot-distro login ubuntu -- opencode
+```
+begitu pula dengan  **9router**:
+
+**`~ $`**
+```
+#!/data/data/com.termux/files/usr/bin/bash
+proot-distro login ubuntu -- 9router
+```
+> Sekarang anda dapat membuka OpenCode dan 9router hanya dengan menggunakan **Xfce Terminal** dengan command `opencode` dan `9router` langsung.
+
+
 Buat peluncur di desktop yang akan menyalakan `9router` secara otomatis dan mengeksekusi `Open Code` di dalam terminal PRoot.
-**A. Jalankan perintah ini di terminal `Termux`/`Xfce4 Terminal` (luar PRoot)**:
+
+### B. Membuat File Shortcut `.desktop`
+
+Anda dapat menempel script berikut untuk membuat Shortcut **OpenCode** di Desktop Xfce4 :
 **`~ $`**
 ```
-cat << 'EOF' > ~/start-ai.sh
-#!/bin/bash
-
-# 1. Pastikan direktori projects ada di Termux
-mkdir -p ~/projects
-
-# 2. Eksekusi masuk PRoot, pindah folder, jalankan 9router & opencode
-proot-distro login ubuntu -- bash -c "cd /root/projects && 9router & sleep 2 && opencode; exec bash"
-EOF
-
-# Beri izin eksekusi
-chmod +x ~/start-ai.sh
-
-```
-**B. Buat File `.desktop` Menuju Skrip Tersebut**
-Buat file `.desktop` yang hanya bertugas memanggil skrip `~/start-ai.sh` **(diluar PRoot)**:
-**`~ $`**
-```
-cat << 'EOF' > ~/Desktop/AI-Agent.desktop
+cat << 'EOF' > ~/Desktop/OpenCode.desktop
 [Desktop Entry]
 Version=1.0
 Type=Application
 Name=AI Agent Workspace
 Comment=Menjalankan AI Agent Workspace
-Exec=xfce4-terminal --title="AI Agent" -e "/data/data/com.termux/files/home/start-ai.sh"
+Exec=xfce4-terminal --title="OpenCode" -e "proot-distro login ubuntu -- opencode"
 Icon=utilities-terminal
 Terminal=false
 Categories=Development;
 EOF
 
-chmod +x ~/Desktop/AI-Agent.desktop
+chmod +x ~/Desktop/OpenCode.desktop
 
 ```
+
+untuk **9router**:
+**`~ $`**
+```
+cat << 'EOF' > ~/Desktop/9router.desktop
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=AI Agent Workspace
+Comment=Menjalankan AI Agent Workspace
+Exec=xfce4-terminal --title="9router" -e "proot-distro login ubuntu -- 9router"
+Icon=utilities-terminal
+Terminal=false
+Categories=Development;
+EOF
+
+chmod +x ~/Desktop/9router.desktop
+
+```
+
 _Port untuk membuka 9router adalah: `http://localhost:20128` atau `http://127.0.0.1:20128`_
 
 
@@ -439,14 +472,20 @@ chmod +x ~/.shortcuts/Mulai-Desktop.sh
 ---
 ---
 
+## F.A.Q
+Q: Kenapa harus menggunakan **Symlink** jika kita bisa menggunakan **--shared-home**?
+
+A: Karena kita menghindari agar AI Agent yang berjalan di PRoot tidak membaca file dan folder yang terkoneksi langsung dengan Android Storage.
+
+
 Bonus:
 > **Skrip Pintasan Terminal Opsional (Jika Dibuat)**
-> Jika membuat pintasan khusus untuk langsung masuk ke direktori projects via terminal PRoot, ubah target perpindahan foldernya dengan `start-proot-projects.sh`, jalankan script berikut pada Termux/Xfce4 Terminal:
+> Jika membuat pintasan khusus untuk langsung masuk ke direktori workspace via terminal PRoot, ubah target perpindahan foldernya dengan `start-proot-workspace.sh`, jalankan script berikut pada Termux/Xfce4 Terminal:
 ```
-cat << 'EOF' > ~/start-proot-projects.sh
+cat << 'EOF' > ~/start-proot-workspace.sh
 #!/bin/bash
-proot-distro login ubuntu -- bash -c "cd /root/projects; exec bash"
+proot-distro login ubuntu -- bash -c "cd /root/workspace; exec bash"
 EOF
 
-chmod +x ~/start-proot-projects.sh
+chmod +x ~/start-proot-workspace.sh
 ```
