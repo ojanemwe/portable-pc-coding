@@ -248,8 +248,17 @@ proot-distro install ubuntu
 proot-distro login ubuntu
 
 ```
-> Selalu gunakan command `proot-distro login ubuntu` untuk memulai menjalankan **terminal PRoot** untuk memulai Vibe Coding *(9router + OpenCode)*
+> Sekarang lokasi eksekusi terminal berada di bagian **`root@ubuntu:~#`**
+>
+> Selalu gunakan command `proot-distro login ubuntu` untuk memulai menjalankan **terminal PRoot** saat akan memulai Vibe Coding *(9router + OpenCode)*
 
+**Persingkat command untuk login PRoot** :
+anda dapat keluar dari PRoot-distro ubuntu terlebih dahulu dengan mengetik:
+
+**`root@ubuntu:~#`**
+```
+exit
+```
 Untuk mempersingkat `proot-distro login ubuntu` menjadi `~$` **`proot`** saja:
 
 **`~ $`**
