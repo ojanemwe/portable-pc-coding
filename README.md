@@ -264,6 +264,13 @@ chmod +x ~/bin/proot
 
 export PATH="$HOME/bin:$PATH"
 ```
+Selanjutnya gunakan command berikut untuk memasukkan export secara permanen:
+
+**`~ $`**
+```
+echo 'export PATH="$HOME/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
+```
 > silahkan coba dengan mengetikkan `proot` pada termux, maka anda akan masuk ke lingkungan PRoot-Ubuntu. `proot-distro login ubuntu` tetap bisa digunakan.
 
 .
@@ -284,7 +291,7 @@ Jika berbeda sesuaikanlah baris command dibawah ini. Jika sama, maka bisa langsu
 **`root@ubuntu:~#`**
 ```
 # Hapus folder/symlink lama jika ada
-rm -rf /root/.config /root/.9router /root/workspace
+rm -rf /root/.config /root/.9router /root/.local /root/workspace /root/Downloads
 
 # Buat symlink langsung ke direktori Termux
 ln -s /data/data/com.termux/files/home/.config /root/.config
