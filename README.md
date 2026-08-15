@@ -381,23 +381,27 @@ proot-distro login ubuntu --shared-home
 ### A. Membuka 9router dan OpenCode langsung dari Xfce4 Terminal
 Kita dapat mempersingkat proses untuk membuka 9router dan OpenCode dengan menggunakan Wrapper yang awalnya perlu menulis `~$ proot-distro login ubuntu` (Xfce Terminal) > `root@ubuntu:~# opencode` _(pada PRoot)_
 **menjadi `~$ opencode` saja pada XFce Terminal**. 
-> Pastikan terlebih dahulu bahwa struktur direktori anda adalah: **`/data/data/com.termux/`dst** jika berbeda, maka sesuaikanlah sebelum menjalankannya!
+> Pastikan terlebih dahulu bahwa struktur direktori anda adalah: **`/data/data/com.termux/`dst** jika berbeda, maka sesuaikanlah wrappernya sebelum menjalankannya!
 
 Gunakan command berikut pada Termux / Xfce Terminal:
 
 **`~ $`**
 ```
-#!/data/data/com.termux/files/usr/bin/bash
-proot-distro login ubuntu -- opencode
-```
-begitu pula dengan  **9router**:
+mkdir -p ~/bin
 
-**`~ $`**
-```
+cat > ~/bin/opencode <<'EOF'
 #!/data/data/com.termux/files/usr/bin/bash
-proot-distro login ubuntu -- 9router
+exec proot-distro login ubuntu -- opencode
+EOF
+
+cat > ~/bin/9router <<'EOF'
+#!/data/data/com.termux/files/usr/bin/bash
+exec proot-distro login ubuntu -- 9router
+EOF
+
+chmod +x ~/bin/opencode ~/bin/9router
 ```
-> Sekarang anda dapat membuka OpenCode dan 9router hanya dengan menggunakan **Xfce Terminal** dengan command `opencode` dan `9router` langsung.
+> Sekarang anda dapat membuka OpenCode dan 9router hanya dengan menggunakan **Xfce Terminal** dengan command **`opencode` dan `9router`** langsung.
 
 
 Buat peluncur di desktop yang akan menyalakan `9router` secara otomatis dan mengeksekusi `Open Code` di dalam terminal PRoot.
