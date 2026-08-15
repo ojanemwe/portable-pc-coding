@@ -294,7 +294,7 @@ ln -s /data/data/com.termux/files/home/workspace /root/workspace
 ln -s /data/data/com.termux/files/home/Downloads /root/Downloads
 
 ```
-> untuk pemeriksaan lebih aman, gunakan `ls -ld /root/.config /root/.9router /root/projects`. Seharusnya folder `/root/.config`, `/root/.9router`, `/root/workspace`, dan `/root/Downloads` memang tidak ada saat awal menggunakan PRoot-distro maka command `rm -rf` tidak akan berdampak.
+> untuk pemeriksaan lebih aman, gunakan `ls -ld /root/.config /root/.9router /root/.local /root/workspace /root/Downloads`. Seharusnya folder `/root/.config`, `/root/.9router`, `/root/.local`, `/root/workspace`, dan `/root/Downloads` memang tidak ada saat awal menggunakan PRoot-distro maka command `rm -rf` tidak akan berdampak.
 
 > Folder `/root/.local` sengaja dibuat tanpa "-proot" karena secara default pemasangan aplikasi akan membaca ".local". Symlink untuk folder `Downloads` juga sengaja saya tambahkan agar ketika bekerja dengan opencode kita dapat meminta AI untuk memeriksa dan bekerja menggunakan file yang kita download pada lingkungan Desktop Xfce4 Native.
 
@@ -369,8 +369,11 @@ gunakan wrapper dan `--shared-home` dengan script berikut untuk mempersingkat `p
 
 **`~ $`**
 ```
+cat > ~/bin/ubuntu <<'EOF'
 #!/data/data/com.termux/files/usr/bin/bash
-proot-distro login ubuntu --shared-home
+exec proot-distro login ubuntu --shared-home
+EOF
+chmod +x ~/bin/ubuntu
 ```
 > Terminal PRoot-distro akan bekerja di `$HOME` Termux hanya dengan command "ubuntu"
 > > membuat terminal PRoot berjalan di lingkungan folder `home` Desktop Xfce4 Termux:X11 yang juga dapat mengakses data Android anda. **TIDAK DIREKOMENDASIKAN jika menjalankan AI**
@@ -447,6 +450,8 @@ chmod +x ~/Desktop/9router.desktop
 ```
 
 _Port untuk membuka 9router adalah: `http://localhost:20128` atau `http://127.0.0.1:20128`_
+
+> Jalankan **9router** terlebih dahulu sebelum menjalankan **OpenCode**
 
 
 ---
