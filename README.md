@@ -468,6 +468,24 @@ _Port untuk membuka 9router adalah: `http://localhost:20128` atau `http://127.0.
 
 > Jalankan **9router** terlebih dahulu sebelum menjalankan **OpenCode**
 
+Untuk shortcut **9router** (background) + **OpenCode** sekaligus:
+
+**`~ $`**
+```
+cat <<'EOF' > ~/Desktop/Ai-Workspace.desktop
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=AI Workspace
+Comment=Start 9Router in Tray and OpenCode in Workspace
+Exec=proot-distro login ubuntu -- bash -c '9router --tray & sleep 5 && cd /root/workspace && exec opencode'
+Terminal=true
+StartupNotify=false
+EOF
+chmod +x ~/Desktop/Ai-Workspace.desktop
+```
+> **UNTUK MENJALANKAN SHORTCUT INI ANDA WAJIB MEMERIKSA UPDATE 9ROUTER TERLEBIH DAHULU!** karena hanya menggunakan waktu delay selama **5 detik** saja untuk masuk ke command selanjutnya.
+
 
 ---
 ## 8. Pembuatan Pintasan Langsung (Shortcut) di Homescreen Android
