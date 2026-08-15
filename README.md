@@ -294,11 +294,11 @@ ln -s /data/data/com.termux/files/home/workspace /root/workspace
 ln -s /data/data/com.termux/files/home/Downloads /root/Downloads
 
 ```
-> untuk pemeriksaan lebih aman, gunakan `ls -ld /root/.config /root/.9router /root/projects`. Seharusnya folder `/root/.config`, `/root/.9router`, `/root/home`, `/root/workspace`, dan `/root/Downloads` memang tidak ada saat awal menggunakan PRoot-distro maka command `rm -rf` tidak akan berdampak.
+> untuk pemeriksaan lebih aman, gunakan `ls -ld /root/.config /root/.9router /root/projects`. Seharusnya folder `/root/.config`, `/root/.9router`, `/root/workspace`, dan `/root/Downloads` memang tidak ada saat awal menggunakan PRoot-distro maka command `rm -rf` tidak akan berdampak.
 
 > Folder `/root/.local` sengaja dibuat tanpa "-proot" karena secara default pemasangan aplikasi akan membaca ".local". Symlink untuk folder `Downloads` juga sengaja saya tambahkan agar ketika bekerja dengan opencode kita dapat meminta AI untuk memeriksa dan bekerja menggunakan file yang kita download pada lingkungan Desktop Xfce4 Native.
 
-> Pastikan dengan command `ls -la` dan anda dapat melihat folder `.config`, `.9router`, `workspace` dan `home` memiliki tanda `-> [folder tujuan]`
+> Pastikan dengan command `ls -la` dan anda dapat melihat folder `.config`, `.9router`, dan `workspace` memiliki tanda `-> [folder tujuan]`
 
 **E. Install Paket Global** (Di dalam PRoot Ubuntu):
  
