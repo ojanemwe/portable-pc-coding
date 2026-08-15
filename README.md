@@ -40,6 +40,7 @@ Buka aplikasi Termux dan jalankan perintah berikut secara berurutan untuk memasa
 pkg update && pkg upgrade -y
 pkg install tur-repo x11-repo -y
 pkg install termux-x11-nightly pulseaudio wget git xfce4 -y
+pkg install zen-browser -y
 termux-setup-storage
 
 ```
@@ -233,7 +234,7 @@ pkg install code-oss proot-distro -y
 Persiapkan folder untuk "9router" & folder konfigurasi untuk semua aplikasi yang akan diinstall melalui _PRoot-Ubuntu_ seperti "OpenCode", folder PRoot yang mungkin perlu untuk anda intip dengan GUI Desktop Xfce4 seperti ".local", serta folder "Workspace" untuk bekerja dengan AI-CLI dengan Command:
 **`~ $`**
 ```
-mkdir -p ~/.9router ~/.config ~/.local-proot ~/workspace
+mkdir -p ~/.9router ~/.config ~/.local-proot ~/workspace ~/Downloads
 
 ```
 > ini akan memeriksa ketersediaan atau membuat folder `home/.9router`, `home/.config`, `home/.local-proot`, dan folder `home/workspace` untuk keperluan Agentic/Vibe Coding. sehingga memudahkan untuk konfigurasi manual dengan GUI Desktop Xfce4.
@@ -262,16 +263,10 @@ EOF
 
 chmod +x ~/bin/proot
 
-export PATH="$HOME/bin:$PATH"
-```
-Selanjutnya gunakan command berikut untuk memasukkan export secara permanen:
-
-**`~ $`**
-```
 echo 'export PATH="$HOME/bin:$PATH"' >> ~/.bashrc
 source ~/.bashrc
 ```
-> silahkan coba dengan mengetikkan `proot` pada termux, maka anda akan masuk ke lingkungan PRoot-Ubuntu. `proot-distro login ubuntu` tetap bisa digunakan.
+> silahkan coba dengan mengetikkan `proot` pada termux _(keluar dari PRoot terlebih dahulu)_, maka anda akan masuk ke lingkungan PRoot-Ubuntu. `proot-distro login ubuntu` tetap bisa digunakan.
 
 .
 **C. Install Node.js LTS** (Di dalam PRoot Ubuntu):
