@@ -198,6 +198,8 @@ rm -rf PhotoGIMP
 4.  Navigasi ke **Load/Save > General**.
 
 5.  Ubah _Always save as_ menjadi **Word 2007-365 (.docx)**. Klik Apply dan OK.
+
+6. Lakukan hal yang sama untuk Spreadsheet **(Excel .xlsx)** dan Presentation **(PowerPoint .pptx)**. 
     
       
     
@@ -221,7 +223,7 @@ Instal **Geany** sebagai editor utama yang sangat ringan *(penggunaan RAM < 50 M
 pkg install geany proot-distro -y
 
 ```
-*Optional: **Code-oss** (Versi Open Source **VSCode**) , gantilah `geany` dengan `code-oss` sehingga menjadi:*
+*OPSI LAIN: **Code-oss** (Versi Open Source **VSCode**) , gantilah `geany` dengan `code-oss` sehingga menjadi:*
 **`~ $`**
 ```
 pkg install code-oss proot-distro -y
@@ -249,8 +251,8 @@ proot-distro login ubuntu
 
 ```
 > Sekarang lokasi eksekusi terminal berada di bagian **`root@ubuntu:~#`**
->
-> Selalu gunakan command `proot-distro login ubuntu` untuk memulai menjalankan **terminal PRoot** saat akan memulai Vibe Coding *(9router + OpenCode)*
+
+> Pada tahap ini kita akan Selalu menggunakan command `proot-distro login ubuntu` untuk memulai menjalankan **terminal PRoot** saat akan memulai Vibe Coding *(9router + OpenCode)*
 
 **Persingkat command untuk login PRoot** :
 anda dapat keluar dari PRoot-distro ubuntu terlebih dahulu dengan mengetik:
@@ -259,7 +261,7 @@ anda dapat keluar dari PRoot-distro ubuntu terlebih dahulu dengan mengetik:
 ```
 exit
 ```
-Untuk mempersingkat `proot-distro login ubuntu` menjadi `~$` **`proot`** saja:
+Sekarang Pastikan anda berada pada terminal Termux/Xfce Native **`~ $`**, Untuk mempersingkat `proot-distro login ubuntu` menjadi `~$` **`proot`** saja, tempel command berikut:
 
 **`~ $`**
 ```
