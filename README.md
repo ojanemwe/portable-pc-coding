@@ -236,7 +236,7 @@ pkg install code-oss proot-distro -y
 Persiapkan folder untuk "9router" & folder konfigurasi untuk semua aplikasi yang akan diinstall melalui _PRoot-Ubuntu_ seperti "OpenCode", folder PRoot yang mungkin perlu untuk anda intip dengan GUI Desktop Xfce4 seperti ".local", serta folder "Workspace" untuk bekerja dengan AI-CLI dengan Command:
 **`~ $`**
 ```
-mkdir -p ~/.9router ~/.config ~/.local-proot ~/workspace ~/Downloads
+mkdir -p ~/.9router ~/.config ~/.local-proot ~/.cache-proot ~/workspace ~/Downloads
 
 ```
 > ini akan memeriksa ketersediaan atau membuat folder `home/.9router`, `home/.config`, `home/.local-proot`, dan folder `home/workspace` untuk keperluan Agentic/Vibe Coding. sehingga memudahkan untuk konfigurasi manual dengan GUI Desktop Xfce4.
@@ -288,6 +288,7 @@ apt install curl git -y
 curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && apt install -y nodejs
 
 ```
+> lakukan verifikasi dengan versi yang terinstall dengan menjalankan `node --version` dan `npm --version`.
 
 **D. Buat Symlink Konfigurasi & Home** (Di dalam PRoot Ubuntu):
 
@@ -297,12 +298,13 @@ Jika berbeda sesuaikanlah baris command dibawah ini. Jika sama, maka bisa langsu
 **`root@ubuntu:~#`**
 ```
 # Hapus folder/symlink lama jika ada
-rm -rf /root/.config /root/.9router /root/.local /root/workspace /root/Downloads
+rm -rf /root/.config /root/.9router /root/.local ~/.cache /root/workspace /root/Downloads
 
 # Buat symlink langsung ke direktori Termux
 ln -s /data/data/com.termux/files/home/.config /root/.config
 ln -s /data/data/com.termux/files/home/.9router /root/.9router
 ln -s /data/data/com.termux/files/home/.local-proot /root/.local
+ln -s /data/data/com.termux/files/home/.cache-proot /root/.cache
 ln -s /data/data/com.termux/files/home/workspace /root/workspace
 ln -s /data/data/com.termux/files/home/Downloads /root/Downloads
 
