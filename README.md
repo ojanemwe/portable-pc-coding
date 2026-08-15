@@ -298,7 +298,7 @@ Jika berbeda sesuaikanlah baris command dibawah ini. Jika sama, maka bisa langsu
 **`root@ubuntu:~#`**
 ```
 # Hapus folder/symlink lama jika ada
-rm -rf /root/.config /root/.9router /root/.local ~/.cache /root/workspace /root/Downloads
+rm -rf /root/.config /root/.9router /root/.local /root/.cache /root/workspace /root/Downloads
 
 # Buat symlink langsung ke direktori Termux
 ln -s /data/data/com.termux/files/home/.config /root/.config
