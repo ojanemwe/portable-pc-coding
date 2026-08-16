@@ -37,7 +37,7 @@ Langkah ini menyiapkan pondasi aplikasi dan perizinan sistem Android.
 
 ---
 Selanjutnya anda dapat **membuat Shortcut** langsung **di Home Screen** anda untuk **membuka PC-Desktop**, dengan cara:
-1. Buka **F-Droid** dan instal aplikasi **Termux:Widget**.
+1. Buka **F-Droid**, cari dan instal aplikasi **Termux:Widget**.
 
 2. Kembali ke layar utama Android (Homescreen).
 
