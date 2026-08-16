@@ -327,23 +327,6 @@ chmod +x ~/Desktop/Terminal-PRoot.desktop
 ```
 > Skrip diatas akan membuat file `Terminal-PRoot.desktop` yang bisa di klik. dan langsung bekerja dalam direktori `root` lingkungan PRoot distro Ubuntu.
 
-.
-
-**Optional (TIDAK DIREKOMENDASIKAN jika menjalankan AI):**
-Jika ingin Langsung menjalankan **Terminal PRoot distro pada home**,
-gunakan wrapper dan `--shared-home` dengan script berikut untuk mempersingkat `proot-distro login ubuntu --shared-home` menjadi `~$` **`ubuntu`** saja:
-
-**`~ $`**
-```
-cat > ~/bin/ubuntu <<'EOF'
-#!/data/data/com.termux/files/usr/bin/bash
-exec proot-distro login ubuntu --shared-home
-EOF
-chmod +x ~/bin/ubuntu
-```
-> Terminal PRoot-distro akan bekerja di `$HOME` Termux hanya dengan command "ubuntu"
-> > membuat terminal PRoot berjalan di lingkungan folder `home` Desktop Xfce4 Termux:X11 yang juga dapat mengakses data Android anda. **TIDAK DIREKOMENDASIKAN jika menjalankan AI**
-
 ---
 ## 6. Pintasan AI Agent di Desktop Xfce4
 
@@ -518,6 +501,22 @@ Q: Kenapa harus menggunakan **Symlink** jika kita bisa menggunakan **--shared-ho
 
 A: Karena kita menghindari agar AI Agent yang berjalan di PRoot tidak membaca file dan folder yang terkoneksi langsung dengan Android Storage.
 
+**Optional (TIDAK DIREKOMENDASIKAN jika menjalankan AI):**
+Jika ingin Langsung menjalankan **Terminal PRoot distro pada home**,
+gunakan wrapper dan `--shared-home` dengan script berikut untuk mempersingkat `proot-distro login ubuntu --shared-home` menjadi `~$` **`ubuntu`** saja:
+
+**`~ $`**
+```
+cat > ~/bin/ubuntu <<'EOF'
+#!/data/data/com.termux/files/usr/bin/bash
+exec proot-distro login ubuntu --shared-home
+EOF
+chmod +x ~/bin/ubuntu
+```
+> Terminal PRoot-distro akan bekerja di `$HOME` Termux hanya dengan command "ubuntu"
+> > membuat terminal PRoot berjalan di lingkungan folder `home` Desktop Xfce4 Termux:X11 yang juga dapat mengakses data Android anda. **TIDAK DIREKOMENDASIKAN jika menjalankan AI**
+
+---
 
 Bonus:
 > **Skrip Pintasan Terminal Opsional (Jika Dibuat)**
