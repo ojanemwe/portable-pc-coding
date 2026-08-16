@@ -478,13 +478,14 @@ Version=1.0
 Type=Application
 Name=AI Workspace
 Comment=Start 9Router in Tray and OpenCode in Workspace
-Exec=proot-distro login ubuntu -- bash -c '9router --tray & sleep 5 && cd /root/workspace && exec opencode'
+Exec=proot-distro login ubuntu -- bash -c '9router --tray & until curl -s http://localhost:20128 >/dev/null; do sleep 1; done; cd /root/workspace && exec opencode'
 Terminal=true
 StartupNotify=false
 EOF
+
 chmod +x ~/Desktop/Ai-Workspace.desktop
 ```
-> **UNTUK MENJALANKAN SHORTCUT INI ANDA WAJIB MEMERIKSA UPDATE 9ROUTER TERLEBIH DAHULU!** karena hanya menggunakan waktu delay selama **5 detik** saja untuk masuk ke command selanjutnya.
+> **UNTUK MENJALANKAN SHORTCUT INI ANDA WAJIB MEMERIKSA UPDATE 9ROUTER TERLEBIH DAHULU!**
 
 
 ---
