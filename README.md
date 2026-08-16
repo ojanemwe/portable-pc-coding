@@ -331,7 +331,7 @@ chmod +x ~/Desktop/Terminal-PRoot.desktop
 
 **Optional (TIDAK DIREKOMENDASIKAN jika menjalankan AI):**
 Jika ingin Langsung menjalankan **Terminal PRoot distro pada home**,
-gunakan wrapper dan `--shared-home` dengan script berikut untuk mempersingkat `proot-distro login ubuntu` menjadi `~$` **`ubuntu`** saja:
+gunakan wrapper dan `--shared-home` dengan script berikut untuk mempersingkat `proot-distro login ubuntu --shared-home` menjadi `~$` **`ubuntu`** saja:
 
 **`~ $`**
 ```
