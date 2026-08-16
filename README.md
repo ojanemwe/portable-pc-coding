@@ -230,7 +230,7 @@ source ~/.bashrc
 ```
 > silahkan coba dengan mengetikkan `proot` pada termux _(keluar dari PRoot terlebih dahulu)_, maka anda akan masuk ke lingkungan PRoot-Ubuntu. `proot-distro login ubuntu` tetap bisa digunakan.
 
-.
+
 **C. Install Node.js LTS** (Di dalam PRoot Ubuntu):
 **`root@ubuntu:~#`**
 ```
