@@ -176,9 +176,9 @@ pkg install geany proot-distro -y
 ```
 *OPSI LAIN: **Code-oss** (Versi Open Source **VSCode**) , gantilah `geany` dengan `code-oss` sehingga menjadi:*
 **`~ $`**
-```
+``
 pkg install code-oss proot-distro -y
-```
+``
 > **Code-oss** berbasis Electron yang membutuhkan RAM 400 MB – 700 MB+
 
 ### AI CLI Agent & 9router
