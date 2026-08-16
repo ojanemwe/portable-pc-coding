@@ -51,76 +51,73 @@ termux-setup-storage
 
 Buat skrip utama Shortcut desktop yang telah dimodifikasi untuk resolusi otomatis dan penghilangan _error output_.
 
-1.  Buat berkas peluncur:
+1.  Buat berkas peluncur agar bisa membuka GUI Desktop XFCE hanya dengan menulis **`pc`** pada termux:
 	```
-	nano ~/pc
-	```
-
-2.  Tempelkan skrip berikut:
-	```
+	cat << 'EOF' > ~/pc
 	#!/data/data/com.termux/files/usr/bin/bash
-
+	
 	# Matikan proses yang tersisa
 	pkill -9 -f "termux.x11" 2>/dev/null
 	pkill -9 -f "xfce4-session" 2>/dev/null
 	pkill -9 -f "pulseaudio" 2>/dev/null
 	pkill -9 -f "dbus-launch" 2>/dev/null
 	pkill -9 -f "dbus-daemon" 2>/dev/null
-
+	
 	sleep 2
-
+	
 	# Bersihkan file PID dan soket kedaluwarsa
 	rm -f /data/data/com.termux/files/usr/var/run/dbus/pid
 	gpgconf --kill gpg-agent 2>/dev/null
-
+	
 	# Pastikan symlink penyimpanan internal ada
 	if [ ! -d "$HOME/storage" ]; then
 	    termux-setup-storage
 	fi
-
+	
 	# Jalankan PulseAudio
 	pulseaudio --start --load="module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1" --exit-idle-time=-1
-
+	
 	sleep 1
-
+	
 	# Mulai server X
 	export XDG_RUNTIME_DIR=${TMPDIR}
 	termux-x11 :0 >/dev/null &
-
+	
 	sleep 3
-
+	
 	# Buka aplikasi Termux:X11 di Android
 	am start --user 0 -n com.termux.x11/com.termux.x11.MainActivity > /dev/null 2>&1
-
+	
 	sleep 1
-
+	
 	# Atur variabel lingkungan
 	export DISPLAY=:0
 	export PULSE_SERVER=127.0.0.1
-
+	
 	# Pengaturan DPI dan Skala
 	xrdb -merge <<< "Xft.dpi: 144"
 	export GDK_SCALE=2
 	export GDK_DPI_SCALE=0.75
 	export XCURSOR_SIZE=40
-
+	
 	# Nonaktifkan GPU untuk QtWebEngine
 	export QTWEBENGINE_DISABLE_GPU=1
 	export QT_QUICK_BACKEND=software
-
+	
 	# Eksekusi resolusi 16:9 (Landscape) di latar belakang
 	# (sleep 4 && xrandr -s 1280x720) &
-
+	
 	# Jalankan XFCE4 tanpa peringatan DBUS dan sistem
 	if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
 	    eval $(dbus-launch --sh-syntax --exit-with-session 2>/dev/null)
 	fi
 	exec xfce4-session 2>/dev/null
+	EOF
+	
+	chmod +x ~/pc
 	```
-
-3.  Simpan (`Ctrl+O`, `Enter`, `Ctrl+X`).
     
-4.  Beri izin eksekusi dan buat alias agar mudah dipanggil:
+2.  Beri izin eksekusi dan buat alias agar mudah dipanggil:
 	```
 	chmod +x ~/pc
 	echo 'alias pc="~/pc"' >> ~/.bashrc
