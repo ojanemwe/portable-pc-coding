@@ -246,6 +246,7 @@ curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && apt install -y nod
 pastikan bahwa direktori home anda terletak di `/data/data/com.termux/files/home/` karna letak direktori bisa saja berbeda tergantung jenis device.
 Periksa melalui **Thunar File Manager** (masuk ke mode desktop terlebih dahulu **~$ pc**, buka folder "Home" yang ada di desktop)!
 Jika berbeda sesuaikanlah baris command dibawah ini. Jika sama, maka bisa langsung menggunakan Command berikut:
+
 **`root@ubuntu:~#`**
 ```
 # Hapus folder/symlink lama jika ada
