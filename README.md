@@ -115,11 +115,11 @@ Buat skrip utama Shortcut desktop yang telah dimodifikasi untuk resolusi otomati
 	EOF
 	
 	chmod +x ~/pc
+	
 	```
     
 2.  Beri izin eksekusi dan buat alias agar mudah dipanggil:
 	```
-	chmod +x ~/pc
 	echo 'alias pc="~/pc"' >> ~/.bashrc
 	source ~/.bashrc
 	
