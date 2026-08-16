@@ -1,4 +1,4 @@
-# Portable PC - Kerja & Agentic Coding
+# Portable PC - Agentic Coding & Kerja
 
 # **Setup Portable PC (Xfce4 di Android) untuk Agentic/Vibe Coding** (Tanpa Root)
 
@@ -47,7 +47,7 @@ termux-setup-storage
 
 
 ---
-## 3. Konfigurasi Launcher Script (Resolusi 16:9 & Clean Terminal)
+## 3. Konfigurasi Launcher Script (Clean Terminal)
 
 Buat skrip utama Shortcut desktop yang telah dimodifikasi untuk resolusi otomatis dan penghilangan _error output_.
 
