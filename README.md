@@ -1,6 +1,5 @@
-# Portable PC - Agentic Coding & Kerja
-
-# **Setup Portable PC (Xfce4 di Android) untuk Agentic/Vibe Coding** (Tanpa Root)
+# Portable PC - Agentic Coding Setup
+**Setup Portable PC (Xfce4 di Android) untuk Agentic/Vibe Coding** (Tanpa Root)
 
 ## Spesifikasi & Kebutuhan Penyimpanan
 
@@ -11,12 +10,9 @@
 -   **Total Penyimpanan (Storage):** ~2.5 GB hingga 4 GB (siapkan ruang kosong minimal 5 GB - 10 GB untuk untuk menampung cache NPM dan stabilitas).
 
 
-
-
-## 1. Persiapan Perangkat Android
+## Persiapan Perangkat Android dan Install Otomatis
 
 Langkah ini menyiapkan pondasi aplikasi dan perizinan sistem Android.
-
   
 
 1.  Unduh dan instal F-Droid dari https://f-droid.org .
@@ -28,11 +24,31 @@ Langkah ini menyiapkan pondasi aplikasi dan perizinan sistem Android.
 4.  Matikan fitur penghemat baterai atau pembatasan baterai untuk aplikasi Termux dan Termux-X11.
 
 5.  Aktifkan Opsi Pengembang (Developer Options) pada pengaturan Android, lalu aktifkan opsi "Disable Child Process Restrictions".
-    
-      
----    
 
-## 2. Instalasi Paket Dasar Termux
+6.  Buka aplikasi Termux _(dari F-Droid)_.
+
+7.  Jalankan perintah berikut pada Termux **`~ $`**:
+    ```
+	curl -sL https://raw.githubusercontent.com/ojanemwe/portable-pc-coding/main/install.sh | bash
+	```
+> Secara otomatis akan meng-install semua paket yang akan saja terangkan dibawah:
+>
+
+
+---
+Selanjutnya anda dapat **membuat Shortcut** langsung **di Home Screen** anda untuk **membuka PC-Desktop**, dengan cara:
+	1. Buka F-Droid dan instal aplikasi **Termux:Widget**.
+	2. Kembali ke layar utama Android (Homescreen).
+	3. Tekan dan tahan area kosong, lalu pilih **Widget**.
+	4. Pilih **Termux:Widget** dan letakkan di layar utama.
+	5. Ketuk **PC-Desktop.sh** pada widget untuk langsung masuk ke lingkungan kerja Xfce4.
+
+---
+# Penjelasan Alur kerja `install.sh`:
+> Anda dapat melakukan istalasi manual dan menyesuaikan dengan kebutuhan anda tanpa menjalankan script otomatis diatas.
+>
+
+## 1. Instalasi Paket Dasar Termux
 
 Buka aplikasi Termux dan jalankan perintah berikut secara berurutan untuk memasang repositori dasar dan desktop Xfce4:
 
@@ -47,7 +63,7 @@ termux-setup-storage
 
 
 ---
-## 3. Konfigurasi Launcher Script (Clean Terminal)
+## 2. Konfigurasi Launcher Script (Clean Terminal)
 
 Buat skrip utama Shortcut desktop yang telah dimodifikasi untuk resolusi otomatis dan penghilangan _error output_.
 
@@ -126,7 +142,7 @@ Buat skrip utama Shortcut desktop yang telah dimodifikasi untuk resolusi otomati
 	```
 
 ---
-## 4. Konfigurasi Tombol Shutdown di Desktop
+## 3. Konfigurasi Tombol Shutdown di Desktop
 
 Buat ikon _shutdown_ di layar desktop untuk menutup sesi dengan aman.
 
@@ -155,7 +171,7 @@ chmod +x ~/Desktop/shutdown.desktop
 
     
 ---
-## 5. Instalasi Lingkungan Vibe Coding (Web App Developer)
+## 4. Instalasi Lingkungan Vibe Coding (Web App Developer)
 Pada bagian ini anda perlu memahami dimana _Command_ akan ditempelkan karena di tahap ini kita akan menggunakan 2 terminal. berikut adalah perbedaan tanda yang akan saya berikan:
 
 **[TERMUX / XFCE]** = **`~ $`** _command_
@@ -329,7 +345,7 @@ chmod +x ~/Desktop/Terminal-PRoot.desktop
 > Skrip diatas akan membuat file `Terminal-PRoot.desktop` yang bisa di klik. dan langsung bekerja dalam direktori `root` lingkungan PRoot distro Ubuntu.
 
 ---
-## 6. Pintasan AI Agent di Desktop Xfce4
+## 5. Pintasan AI Agent di Desktop Xfce4
 
 ### A. Membuka 9router dan OpenCode langsung dari Xfce4 Terminal
 Kita dapat mempersingkat proses untuk membuka 9router dan OpenCode dengan menggunakan Wrapper yang awalnya perlu menulis `~$ proot-distro login ubuntu` (Xfce Terminal) > `root@ubuntu:~# opencode` _(pada PRoot)_
@@ -424,7 +440,7 @@ chmod +x ~/Desktop/Ai-Workspace.desktop
 
 
 ---
-## 7. Pembuatan Pintasan Langsung (Shortcut) di Homescreen Android
+## 6. Pembuatan Pintasan Langsung (Shortcut) di Homescreen Android
 
 Langkah ini membuat akses satu kali ketuk dari layar utama _smartphone_ langsung menuju Desktop Xfce4.
 
@@ -448,7 +464,7 @@ chmod +x ~/.shortcuts/PC-Desktop.sh
 6.  Ketuk **PC-Desktop.sh** pada widget untuk langsung masuk ke lingkungan kerja Xfce4.
 ---
 
-## 8. Instalasi Aplikasi Kantoran & Desain
+## 7. Instalasi Aplikasi Kantoran & Desain
 Masuk Ke Desktop GUI Xfce. Buka terminal,
 Jalankan perintah instalasi berikut pada **Xfce4 Terminal**:
 ```
@@ -518,15 +534,4 @@ chmod +x ~/bin/ubuntu
 > > membuat terminal PRoot berjalan di lingkungan folder `home` Desktop Xfce4 Termux:X11 yang juga dapat mengakses data Android anda. **TIDAK DIREKOMENDASIKAN jika menjalankan AI**
 
 ---
-
-Bonus:
-> **Skrip Pintasan Terminal Opsional (Jika Dibuat)**
-> Jika membuat pintasan khusus untuk langsung masuk ke direktori workspace via terminal PRoot, ubah target perpindahan foldernya dengan `start-proot-workspace.sh`, jalankan script berikut pada Termux/Xfce4 Terminal:
-```
-cat << 'EOF' > ~/start-proot-workspace.sh
-#!/bin/bash
-proot-distro login ubuntu -- bash -c "cd /root/workspace; exec bash"
-EOF
-
-chmod +x ~/start-proot-workspace.sh
-```
+---
