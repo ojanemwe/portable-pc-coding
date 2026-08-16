@@ -434,8 +434,8 @@ Langkah ini membuat akses satu kali ketuk dari layar utama _smartphone_ langsung
 **`~ $`**
 ```
 mkdir -p ~/.shortcuts
-echo -e '#!/data/data/com.termux/files/usr/bin/bash\npc' > ~/.shortcuts/Mulai-Desktop.sh
-chmod +x ~/.shortcuts/Mulai-Desktop.sh
+echo -e '#!/data/data/com.termux/files/usr/bin/bash\npc' > ~/.shortcuts/PC-Desktop.sh
+chmod +x ~/.shortcuts/PC-Desktop.sh
 
 ```
 
@@ -445,7 +445,7 @@ chmod +x ~/.shortcuts/Mulai-Desktop.sh
 
 5.  Pilih **Termux:Widget** dan letakkan di layar utama.
 
-6.  Ketuk **Mulai-Desktop.sh** pada widget untuk langsung masuk ke lingkungan kerja Xfce4.
+6.  Ketuk **PC-Desktop.sh** pada widget untuk langsung masuk ke lingkungan kerja Xfce4.
 ---
 
 ## 8. Instalasi Aplikasi Kantoran & Desain
