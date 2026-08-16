@@ -181,8 +181,10 @@ xdg-mime default featherpad.desktop text/markdown
 ### Konfigurasi GIMP menjadi PhotoGIMP (Mirip Photoshop)
 ```
 git clone https://github.com/Diolinux/PhotoGIMP.git
-mkdir -p ~/.config/GIMP/2.10/
-cp -r PhotoGIMP/.var/app/org.gimp.GIMP/config/GIMP/2.10/* ~/.config/GIMP/2.10/
+GIMP_VER=$(gimp --version | grep -oE '[0-9]+\.[0-9]+' | head -n 1)
+PHOTOGIMP_VER=$(ls PhotoGIMP/.var/app/org.gimp.GIMP/config/GIMP/ | sort -V | tail -n 1)
+mkdir -p ~/.config/GIMP/$GIMP_VER/
+cp -r PhotoGIMP/.var/app/org.gimp.GIMP/config/GIMP/$PHOTOGIMP_VER/* ~/.config/GIMP/$GIMP_VER/
 rm -rf PhotoGIMP
 
 ```
