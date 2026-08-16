@@ -158,58 +158,13 @@ chmod +x ~/Desktop/shutdown.desktop
 
 ```
 
-> **CATATAN USER KANTORAN:** _Bagi pengguna yang hanya membutuhkan fungsi **pekerjaan kantor** dan **desain ringan**, jalankan Tahap 5 dan **langsung ke Tahap 8**. Anda tidak perlu menerapkan Tahap 6 dan 7._
+> **CATATAN USER KANTORAN:** _Bagi pengguna yang hanya membutuhkan fungsi **pekerjaan kantor** dan **desain ringan**, Anda tidak perlu menerapkan Tahap 5 dan 6._
 > 
 >   
 
----
-## 5. Instalasi Aplikasi Kantoran & Desain
-
-Jalankan perintah instalasi berikut:
-```
-pkg install libreoffice mousepad featherpad gimp -y
-
-```
-
-### Konfigurasi Default Pembaca Teks (.txt & .md)
-```
-xdg-mime default mousepad.desktop text/plain
-xdg-mime default featherpad.desktop text/markdown
-
-```
-
-### Konfigurasi GIMP menjadi PhotoGIMP (Mirip Photoshop)
-Buka GIMP terlebih dahulu pada Desktop XFCE4 Termux:X11 dan tutup kembali agar aplikasi secara otomatis membuat folder yang diperlukan, lalu buka `Xfce Terminal` dengan klik **Aplication > System > Xfce Terminal**, dan tempel command berikut!
-```
-git clone https://github.com/Diolinux/PhotoGIMP.git
-GIMP_VER=$(gimp --version | grep -oE '[0-9]+\.[0-9]+' | head -n 1)
-PHOTOGIMP_VER=$(ls PhotoGIMP/.var/app/org.gimp.GIMP/config/GIMP/ | sort -V | tail -n 1)
-mkdir -p ~/.config/GIMP/$GIMP_VER/
-cp -r PhotoGIMP/.var/app/org.gimp.GIMP/config/GIMP/$PHOTOGIMP_VER/* ~/.config/GIMP/$GIMP_VER/
-rm -rf PhotoGIMP
-
-```
-> Command diatas bersifat dinamis dan akan secara otomatis menempatkan file PhotoGIMP versi terakhir ke folder `.config/GIMP/[versi berapapun]`
-
-
-### Konfigurasi Default Format LibreOffice (.docx)
-
-1.  Jalankan `pc` untuk masuk ke Desktop Xfce4.
-
-2.  Buka LibreOffice.
-
-3.  Masuk ke **Tools > Options** (`Alt + F12`).
-
-4.  Navigasi ke **Load/Save > General**.
-
-5.  Ubah _Always save as_ menjadi **Word 2007-365 (.docx)**. Klik Apply dan OK.
-
-6. Lakukan hal yang sama untuk Spreadsheet **(Excel .xlsx)** dan Presentation **(PowerPoint .pptx)**. 
-    
-      
     
 ---
-## 6. Instalasi Lingkungan Vibe Coding (Web App Developer)
+## 5. Instalasi Lingkungan Vibe Coding (Web App Developer)
 Pada bagian ini anda perlu memahami dimana _Command_ akan ditempelkan karena di tahap ini kita akan menggunakan 2 terminal. berikut adalah perbedaan tanda yang akan saya berikan:
 
 **[TERMUX / XFCE]** = **`~ $`** _command_
@@ -399,7 +354,7 @@ chmod +x ~/bin/ubuntu
 > > membuat terminal PRoot berjalan di lingkungan folder `home` Desktop Xfce4 Termux:X11 yang juga dapat mengakses data Android anda. **TIDAK DIREKOMENDASIKAN jika menjalankan AI**
 
 ---
-## 7. Pintasan AI Agent di Desktop Xfce4
+## 6. Pintasan AI Agent di Desktop Xfce4
 
 ### A. Membuka 9router dan OpenCode langsung dari Xfce4 Terminal
 Kita dapat mempersingkat proses untuk membuka 9router dan OpenCode dengan menggunakan Wrapper yang awalnya perlu menulis `~$ proot-distro login ubuntu` (Xfce Terminal) > `root@ubuntu:~# opencode` _(pada PRoot)_
@@ -494,7 +449,7 @@ chmod +x ~/Desktop/Ai-Workspace.desktop
 
 
 ---
-## 8. Pembuatan Pintasan Langsung (Shortcut) di Homescreen Android
+## 7. Pembuatan Pintasan Langsung (Shortcut) di Homescreen Android
 
 Langkah ini membuat akses satu kali ketuk dari layar utama _smartphone_ langsung menuju Desktop Xfce4.
 
@@ -516,6 +471,53 @@ chmod +x ~/.shortcuts/Mulai-Desktop.sh
 5.  Pilih **Termux:Widget** dan letakkan di layar utama.
 
 6.  Ketuk **Mulai-Desktop.sh** pada widget untuk langsung masuk ke lingkungan kerja Xfce4.
+---
+
+## 8. Instalasi Aplikasi Kantoran & Desain
+Masuk Ke Desktop GUI Xfce. Buka terminal,
+Jalankan perintah instalasi berikut pada **Xfce4 Terminal**:
+```
+pkg install libreoffice mousepad featherpad gimp -y
+
+```
+
+
+### Konfigurasi Default Pembaca Teks (.txt & .md)
+```
+xdg-mime default mousepad.desktop text/plain
+xdg-mime default featherpad.desktop text/markdown
+
+```
+
+### Konfigurasi GIMP menjadi PhotoGIMP (Mirip Photoshop)
+Buka GIMP terlebih dahulu pada Desktop XFCE4 Termux:X11 dan tutup kembali agar aplikasi secara otomatis membuat folder yang diperlukan, lalu buka `Xfce Terminal` dengan klik **Aplication > System > Xfce Terminal**, dan tempel command berikut!
+```
+git clone https://github.com/Diolinux/PhotoGIMP.git
+GIMP_VER=$(gimp --version | grep -oE '[0-9]+\.[0-9]+' | head -n 1)
+PHOTOGIMP_VER=$(ls PhotoGIMP/.var/app/org.gimp.GIMP/config/GIMP/ | sort -V | tail -n 1)
+mkdir -p ~/.config/GIMP/$GIMP_VER/
+cp -r PhotoGIMP/.var/app/org.gimp.GIMP/config/GIMP/$PHOTOGIMP_VER/* ~/.config/GIMP/$GIMP_VER/
+rm -rf PhotoGIMP
+
+```
+> Command diatas bersifat dinamis dan akan secara otomatis menempatkan file PhotoGIMP versi terakhir ke folder `.config/GIMP/[versi berapapun]`
+
+
+### Konfigurasi Default Format LibreOffice (.docx)
+
+1.  Jalankan `pc` untuk masuk ke Desktop Xfce4.
+
+2.  Buka LibreOffice.
+
+3.  Masuk ke **Tools > Options** (`Alt + F12`).
+
+4.  Navigasi ke **Load/Save > General**.
+
+5.  Ubah _Always save as_ menjadi **Word 2007-365 (.docx)**. Klik Apply dan OK.
+
+6. Lakukan hal yang sama untuk Spreadsheet **(Excel .xlsx)** dan Presentation **(PowerPoint .pptx)**. 
+    
+
 
 ---
 ---
