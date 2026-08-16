@@ -37,11 +37,15 @@ Langkah ini menyiapkan pondasi aplikasi dan perizinan sistem Android.
 
 ---
 Selanjutnya anda dapat **membuat Shortcut** langsung **di Home Screen** anda untuk **membuka PC-Desktop**, dengan cara:
-	1. Buka F-Droid dan instal aplikasi **Termux:Widget**.
-	2. Kembali ke layar utama Android (Homescreen).
-	3. Tekan dan tahan area kosong, lalu pilih **Widget**.
-	4. Pilih **Termux:Widget** dan letakkan di layar utama.
-	5. Ketuk **PC-Desktop.sh** pada widget untuk langsung masuk ke lingkungan kerja Xfce4.
+1. Buka F-Droid dan instal aplikasi **Termux:Widget**.
+
+2. Kembali ke layar utama Android (Homescreen).
+
+3. Tekan dan tahan area kosong, lalu pilih **Widget**.
+
+4. Pilih **Termux:Widget** dan letakkan di layar utama.
+
+5. Ketuk **PC-Desktop.sh** pada widget untuk langsung masuk ke lingkungan kerja Xfce4.
 
 ---
 # Penjelasan Alur kerja `install.sh`:
