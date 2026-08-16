@@ -133,12 +133,7 @@ Buat ikon _shutdown_ di layar desktop untuk menutup sesi dengan aman.
 Jalankan perintah ini di Termux:
 ```
 mkdir -p ~/Desktop
-nano ~/Desktop/shutdown.desktop
-
-```
-
-Tempelkan kode berikut:
-```
+cat << 'EOF' > ~/Desktop/shutdown.desktop
 [Desktop Entry]
 Type=Application
 Name=Shutdown
@@ -148,9 +143,8 @@ Terminal=true
 Categories=System;
 Path=
 StartupNotify=false
-```
-Simpan (`Ctrl+O`, `Enter`, `Ctrl+X`), lalu ketik:
-```
+EOF
+
 chmod +x ~/Desktop/shutdown.desktop
 
 ```
