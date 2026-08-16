@@ -179,7 +179,7 @@ xdg-mime default featherpad.desktop text/markdown
 ```
 
 ### Konfigurasi GIMP menjadi PhotoGIMP (Mirip Photoshop)
-Buka GIMP terlebih dahulu pada Desktop XFCE4 Termux:X11, lalu buka `Xfce Terminal` dengan klik **Aplication > System > Xfce Terminal**, dan tempel command berikut!
+Buka GIMP terlebih dahulu pada Desktop XFCE4 Termux:X11 dan tutup kembali agar aplikasi secara otomatis membuat folder yang diperlukan, lalu buka `Xfce Terminal` dengan klik **Aplication > System > Xfce Terminal**, dan tempel command berikut!
 ```
 git clone https://github.com/Diolinux/PhotoGIMP.git
 GIMP_VER=$(gimp --version | grep -oE '[0-9]+\.[0-9]+' | head -n 1)
@@ -189,7 +189,8 @@ cp -r PhotoGIMP/.var/app/org.gimp.GIMP/config/GIMP/$PHOTOGIMP_VER/* ~/.config/GI
 rm -rf PhotoGIMP
 
 ```
-> script diatas akan
+> Command diatas bersifat dinamis dan akan secara otomatis menempatkan file PhotoGIMP versi terakhir ke folder `.config/GIMP/[versi berapapun]`
+
 
 ### Konfigurasi Default Format LibreOffice (.docx)
 
