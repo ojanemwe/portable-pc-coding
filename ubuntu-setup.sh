@@ -1,14 +1,35 @@
 #!/bin/bash
 
-# 1. Update & Install Dependencies
-apt update && apt upgrade -y
-apt install curl git -y
+set -e
 
-# 2. Install Node.js LTS
+# ============================================================
+# Portable PC - Ubuntu PRoot Installer
+# ============================================================
+
+echo "=============================================="
+echo " Portable PC - Ubuntu PRoot Setup"
+echo "=============================================="
+
+export DEBIAN_FRONTEND=noninteractive
+
+# C. Install Node.js LTS
+echo
+echo "[Ubuntu] Menginstall paket dasar..."
+
+apt-get -o Dpkg::Options::="--force-confold" update
+apt-get -o Dpkg::Options::="--force-confold" upgrade -y
+apt-get -o Dpkg::Options::="--force-confold" install -y curl git
+
+echo
+echo "[Ubuntu] Menginstall Node.js LTS..."
+
 curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
-apt install -y nodejs
+apt-get -o Dpkg::Options::="--force-confold" install -y nodejs
 
-# 3. Hapus Folder Default Root & Buat Symlink ke Home Termux
+# D. Buat Symlink Konfigurasi & Home
+echo
+echo "[Ubuntu] Membuat symlink konfigurasi..."
+
 rm -rf /root/.config /root/.9router /root/.local /root/.cache /root/workspace /root/Downloads
 
 ln -s /data/data/com.termux/files/home/.config /root/.config
@@ -18,5 +39,13 @@ ln -s /data/data/com.termux/files/home/.cache-proot /root/.cache
 ln -s /data/data/com.termux/files/home/workspace /root/workspace
 ln -s /data/data/com.termux/files/home/Downloads /root/Downloads
 
-# 4. Install Global NPM Packages
+# E. Install Paket Global
+echo
+echo "[Ubuntu] Menginstall 9router dan OpenCode..."
+
 npm install -g 9router opencode-ai
+
+echo
+echo "=============================================="
+echo " Ubuntu PRoot setup selesai."
+echo "=============================================="
