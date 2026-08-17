@@ -29,7 +29,7 @@ Langkah ini menyiapkan pondasi aplikasi dan perizinan sistem Android.
 
 7.  Jalankan perintah berikut pada Termux **`~ $`**:
     ```
-	curl -sL https://raw.githubusercontent.com/ojanemwe/portable-pc-coding/main/install.sh | bash
+	curl -sL https://raw.githubusercontent.com/ojanemwe/portable-pc-coding/main/desktop.sh -o ~/desktop.sh && bash ~/desktop.sh
 	```
 > Secara otomatis akan meng-install semua paket yang akan saja terangkan dibawah:
 >
