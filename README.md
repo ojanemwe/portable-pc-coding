@@ -488,7 +488,7 @@ xdg-mime default featherpad.desktop text/markdown
 Buka GIMP terlebih dahulu pada Desktop XFCE4 Termux:X11 dan tutup kembali agar aplikasi secara otomatis membuat folder yang diperlukan, lalu buka `Xfce Terminal` dengan klik **Aplication > System > Xfce Terminal**, dan tempel command berikut!
 ```
 git clone https://github.com/Diolinux/PhotoGIMP.git
-GIMP_VER=$(gimp --version | grep -oE '[0-9]+\.[0-9]+' | head -n 1)
+GIMP_VER=$(pkg show gimp | grep -i "Version" | grep -oE '[0-9]+\.[0-9]+' | head -n 1)
 PHOTOGIMP_VER=$(ls PhotoGIMP/.var/app/org.gimp.GIMP/config/GIMP/ | sort -V | tail -n 1)
 mkdir -p ~/.config/GIMP/$GIMP_VER/
 cp -r PhotoGIMP/.var/app/org.gimp.GIMP/config/GIMP/$PHOTOGIMP_VER/* ~/.config/GIMP/$GIMP_VER/
