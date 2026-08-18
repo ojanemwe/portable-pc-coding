@@ -80,6 +80,10 @@ export QT_QUICK_BACKEND=software
 # Eksekusi resolusi 16:9 (Landscape) di latar belakang
 # (sleep 4 && xrandr -s 1280x720) &
 
+# Pastikan variabel lingkungan dan prompt di-export
+export SHELL=/data/data/com.termux/files/usr/bin/bash
+export PS1='\[\e[0;32m\]\w\[\e[0m\] \$ '
+
 # Jalankan XFCE4 tanpa peringatan DBUS dan sistem
 if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
     eval $(dbus-launch --sh-syntax --exit-with-session 2>/dev/null)
@@ -214,12 +218,20 @@ chmod +x ~/Desktop/Ai-Workspace.desktop
 # ============================================================
 run_stage "TAHAP 6/7 - Membuat Shortcut Termux:Widget"
 
+cat << 'EOF' > ~/.bash_profile
+if [ -f /data/data/com.termux/files/usr/etc/bash.bashrc ]; then
+    . /data/data/com.termux/files/usr/etc/bash.bashrc
+fi
+if [ -f ~/.bashrc ]; then
+    . ~/.bashrc
+fi
+EOF
+
 mkdir -p ~/.shortcuts
 
 cat << 'EOF_WIDGET' > ~/.shortcuts/PC-Desktop.sh
 #!/data/data/com.termux/files/usr/bin/bash
-
-exec "$HOME/pc"
+exec bash -l "$HOME/pc"
 EOF_WIDGET
 
 chmod +x ~/.shortcuts/PC-Desktop.sh
