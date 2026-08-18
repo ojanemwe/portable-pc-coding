@@ -458,6 +458,17 @@ echo -e '#!/data/data/com.termux/files/usr/bin/bash\npc' > ~/.shortcuts/PC-Deskt
 chmod +x ~/.shortcuts/PC-Desktop.sh
 
 ```
+dan buat agar `PC-Desktop.sh` mengeksekusi perintah `pc`:
+
+```
+cat << 'EOF' > ~/.shortcuts/PC-Desktop.sh
+#!/data/data/com.termux/files/usr/bin/bash
+
+exec "$HOME/pc"
+EOF
+
+chmod 700 ~/.shortcuts/PC-Desktop.sh
+```
 
 3.  Kembali ke layar utama Android (Homescreen).
 
