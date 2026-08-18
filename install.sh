@@ -175,8 +175,8 @@ cat << 'EOF_OPEN' > ~/Desktop/OpenCode.desktop
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name=AI Agent Workspace
-Comment=Menjalankan AI Agent Workspace
+Name=OpenCode
+Comment=Menjalankan OpenCode pada direktori root didalam PRoot
 Exec=xfce4-terminal --title="OpenCode" -e "proot-distro login ubuntu -- opencode"
 Icon=utilities-terminal
 Terminal=false
@@ -188,8 +188,8 @@ cat << 'EOF_ROUTER' > ~/Desktop/9router.desktop
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name=AI Agent Workspace
-Comment=Menjalankan AI Agent Workspace
+Name=9router
+Comment=Menjalankan 9router pada PRoot
 Exec=xfce4-terminal --title="9router" -e "proot-distro login ubuntu -- 9router"
 Icon=utilities-terminal
 Terminal=false
