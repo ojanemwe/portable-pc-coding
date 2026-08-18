@@ -127,6 +127,10 @@ Buat skrip utama Shortcut desktop yang telah dimodifikasi untuk resolusi otomati
 	# Eksekusi resolusi 16:9 (Landscape) di latar belakang
 	# (sleep 4 && xrandr -s 1280x720) &
 	
+	# Pastikan variabel lingkungan dan prompt di-export
+	export SHELL=/data/data/com.termux/files/usr/bin/bash
+	export PS1='\[\e[0;32m\]\w\[\e[0m\] \$ '
+	
 	# Jalankan XFCE4 tanpa peringatan DBUS dan sistem
 	if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
 	    eval $(dbus-launch --sh-syntax --exit-with-session 2>/dev/null)
@@ -450,9 +454,18 @@ Langkah ini membuat akses satu kali ketuk dari layar utama _smartphone_ langsung
 
 1.  Buka F-Droid dan instal aplikasi **Termux:Widget**.
 
-2.  Buka Termux, buat direktori pintasan, dan buat skrip eksekutor:
+2.  Buka Termux, buat direktori pintasan, buat file `~/.bash_profile` dan buat skrip eksekutor:
 **`~ $`**
 ```
+cat << 'EOF' > ~/.bash_profile
+if [ -f /data/data/com.termux/files/usr/etc/bash.bashrc ]; then
+    . /data/data/com.termux/files/usr/etc/bash.bashrc
+fi
+if [ -f ~/.bashrc ]; then
+    . ~/.bashrc
+fi
+EOF
+
 mkdir -p ~/.shortcuts
 echo -e '#!/data/data/com.termux/files/usr/bin/bash\npc' > ~/.shortcuts/PC-Desktop.sh
 chmod +x ~/.shortcuts/PC-Desktop.sh
@@ -461,11 +474,10 @@ chmod +x ~/.shortcuts/PC-Desktop.sh
 dan buat agar `PC-Desktop.sh` mengeksekusi perintah `pc`:
 
 ```
-cat << 'EOF' > ~/.shortcuts/PC-Desktop.sh
+cat << 'EOF_WIDGET' > ~/.shortcuts/PC-Desktop.sh
 #!/data/data/com.termux/files/usr/bin/bash
-
-exec "$HOME/pc"
-EOF
+exec bash -l "$HOME/pc"
+EOF_WIDGET
 
 chmod 700 ~/.shortcuts/PC-Desktop.sh
 ```
