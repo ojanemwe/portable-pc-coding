@@ -216,13 +216,13 @@ run_stage "TAHAP 6/7 - Membuat Shortcut Termux:Widget"
 
 mkdir -p ~/.shortcuts
 
-cat << 'EOF' > ~/.shortcuts/PC-Desktop.sh
+cat << 'EOF_WIDGET' > ~/.shortcuts/PC-Desktop.sh
 #!/data/data/com.termux/files/usr/bin/bash
 
 exec "$HOME/pc"
-EOF
+EOF_WIDGET
 
-chmod 700 ~/.shortcuts/PC-Desktop.sh
+chmod +x ~/.shortcuts/PC-Desktop.sh
 
 # ============================================================
 # 7. Aplikasi Kantoran & Desain - Termux Native
