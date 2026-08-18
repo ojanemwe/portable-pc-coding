@@ -12,21 +12,7 @@ echo "=============================================="
 
 export DEBIAN_FRONTEND=noninteractive
 
-# C. Install Node.js LTS
-echo
-echo "[Ubuntu] Menginstall paket dasar..."
-
-apt-get -o Dpkg::Options::="--force-confold" update
-apt-get -o Dpkg::Options::="--force-confold" upgrade -y
-apt-get -o Dpkg::Options::="--force-confold" install -y curl git
-
-echo
-echo "[Ubuntu] Menginstall Node.js LTS..."
-
-curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
-apt-get -o Dpkg::Options::="--force-confold" install -y nodejs
-
-# D. Buat Symlink Konfigurasi & Home
+# C. Buat Symlink Konfigurasi & Home
 echo
 echo "[Ubuntu] Membuat symlink konfigurasi..."
 
@@ -38,6 +24,20 @@ ln -s /data/data/com.termux/files/home/.local-proot /root/.local
 ln -s /data/data/com.termux/files/home/.cache-proot /root/.cache
 ln -s /data/data/com.termux/files/home/workspace /root/workspace
 ln -s /data/data/com.termux/files/home/Downloads /root/Downloads
+
+# D. Install Node.js LTS
+echo
+echo "[Ubuntu] Menginstall paket dasar..."
+
+apt-get update
+apt-get -o Dpkg::Options::="--force-confold" upgrade -y
+apt-get -o Dpkg::Options::="--force-confold" install -y curl git
+
+echo
+echo "[Ubuntu] Menginstall Node.js LTS..."
+
+curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
+apt-get -o Dpkg::Options::="--force-confold" install -y nodejs
 
 # E. Install Paket Global
 echo
