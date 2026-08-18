@@ -31,7 +31,7 @@ Langkah ini menyiapkan pondasi aplikasi dan perizinan sistem Android.
     ```
 	curl -sL https://raw.githubusercontent.com/ojanemwe/portable-pc-coding/main/install.sh -o ~/install.sh && bash ~/install.sh
 	```
-> Secara otomatis akan meng-install semua paket yang akan saja terangkan dibawah:
+> Cukup dengan sekali Salin dan tempel, proses instalasi akan berjalan Secara interaktif dan akan meng-install semua paket yang akan saya terangkan dibawah:
 >
 
 
