@@ -499,14 +499,6 @@ pkg install libreoffice mousepad featherpad gimp -y
 
 ```
 
-### Salin font msoffice Agar Penyuntingan File Office dari PC W*nd0ws 
-agar tidak merusak susunan/layout File ketika membuka file MS.Office di LibreOffice.
-```
-pkg install subversion -y
-mkdir -p ~/.local/share/fonts
-svn export https://github.com/ojanemwe/portable-pc-coding/trunk/fonts ~/.local/share/fonts --force
-```
-
 ### Konfigurasi Default Pembaca Teks (.txt & .md)
 ```
 xdg-mime default mousepad.desktop text/plain
@@ -537,9 +529,16 @@ rm -rf PhotoGIMP
 > Command diatas bersifat dinamis dan akan secara otomatis menempatkan file PhotoGIMP versi terakhir ke folder `.config/GIMP/[versi berapapun]`
 
 
+### Salin font msoffice Agar Penyuntingan File Office dari PC W*nd0ws 
+agar tidak merusak susunan/layout File ketika membuka file MS.Office di LibreOffice.
+```
+pkg install git -y && mkdir -p ~/.local/share/fonts && git clone --no-checkout --depth 1 https://github.com/ojanemwe/portable-pc-coding.git temp_repo && cd temp_repo && git sparse-checkout set fonts && git checkout && mv fonts/* ~/.local/share/fonts/ && cd .. && rm -rf temp_repo
+```
+> Pastikan git sudah terinstal (`pkg install git -y`), Pastikan/buat direktori target (`mkdir -p ~/.local/share/fonts`), Clone repositori tanpa mengunduh isi file (`git clone --no-checkout --depth 1 https://github.com/ojanemwe/portable-pc-coding.git temp_repo`), Masuk ke repositori sementara (`cd temp_repo`), Atur agar hanya folder 'fonts' yang diunduh (`git sparse-checkout set fonts`), Checkout file (`git checkout`), Pindahkan isi folder 'fonts' ke direktori ~/.local/share/fonts (`mv fonts/* ~/.local/share/fonts/`), Kembali ke direktori sebelumnya (`cd ..`), Hapus folder sementara dan metadata git agar bersih (`rm -rf temp_repo`).
+
 ### Konfigurasi Default Format LibreOffice (.docx)
 
-1.  Jalankan `pc` untuk masuk ke Desktop Xfce4.
+1.  Jalankan `pc` (pada Termux) untuk masuk ke Desktop Xfce4.
 
 2.  Buka LibreOffice.
 
