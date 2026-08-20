@@ -491,7 +491,7 @@ chmod 700 ~/.shortcuts/PC-Desktop.sh
 6.  Ketuk **PC-Desktop.sh** pada widget untuk langsung masuk ke lingkungan kerja Xfce4.
 ---
 
-## 7. Instalasi Aplikasi Kantoran & Desain
+## 7. Instalasi Aplikasi Kantoran & Desain ( **`~ $`** )
 Masuk Ke Desktop GUI Xfce. Buka terminal,
 Jalankan perintah instalasi berikut pada **Xfce4 Terminal**:
 ```
@@ -499,6 +499,13 @@ pkg install libreoffice mousepad featherpad gimp -y
 
 ```
 
+### Salin font msoffice Agar Penyuntingan File Office dari PC W*nd0ws 
+agar tidak merusak susunan/layout File ketika membuka file MS.Office di LibreOffice.
+```
+pkg install subversion -y
+mkdir -p ~/.local/share/fonts
+svn export https://github.com/ojanemwe/portable-pc-coding/trunk/fonts ~/.local/share/fonts --force
+```
 
 ### Konfigurasi Default Pembaca Teks (.txt & .md)
 ```
