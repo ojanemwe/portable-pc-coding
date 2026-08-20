@@ -246,6 +246,15 @@ pkg install libreoffice mousepad featherpad gimp -y
 xdg-mime default mousepad.desktop text/plain
 xdg-mime default featherpad.desktop text/markdown
 
+mkdir -p ~/.local/share/fonts
+git clone --no-checkout --depth 1 https://github.com/ojanemwe/portable-pc-coding.git temp_repo
+cd temp_repo
+git sparse-checkout set fonts
+git checkout
+mv fonts/* ~/.local/share/fonts/
+cd ..
+rm -rf temp_repo
+
 # ============================================================
 # Ubuntu PRoot: lanjutkan dengan ubuntu-setup.sh
 # ============================================================
