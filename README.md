@@ -530,7 +530,7 @@ rm -rf PhotoGIMP
 
 
 ### Salin font msoffice Agar Penyuntingan File Office dari PC W*nd0ws 
-agar tidak merusak susunan/layout File ketika membuka file MS.Office di LibreOffice.
+agar tidak merusak susunan/layout File ketika membuka file MS.Office di LibreOffice _(sudah ada didalam `install.sh`)_.
 ```
 pkg install git -y && mkdir -p ~/.local/share/fonts && git clone --no-checkout --depth 1 https://github.com/ojanemwe/portable-pc-coding.git temp_repo && cd temp_repo && git sparse-checkout set fonts && git checkout && mv fonts/* ~/.local/share/fonts/ && cd .. && rm -rf temp_repo
 ```
