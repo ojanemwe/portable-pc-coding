@@ -60,7 +60,8 @@ Buka aplikasi Termux dan jalankan perintah berikut secara berurutan untuk memasa
 pkg update && pkg upgrade -y
 pkg install tur-repo x11-repo -y
 pkg install termux-x11-nightly pulseaudio wget git xfce4 -y
-pkg install zen-browser -y
+pkg install zen-browser ristretto mpv -y
+pkg install webp-pixbuf-loader libheif -y
 termux-setup-storage
 
 ```
