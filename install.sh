@@ -16,7 +16,7 @@ run_stage "TAHAP 1/7 - Instalasi Paket Dasar Termux"
 pkg update
 pkg upgrade -y
 pkg install tur-repo x11-repo -y
-pkg install termux-x11-nightly pulseaudio wget git xfce4 -y
+pkg install termux-x11-nightly pulseaudio wget git xfce4 galculator -y
 pkg install zen-browser -y
 
 termux-setup-storage
