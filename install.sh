@@ -18,7 +18,7 @@ pkg upgrade -y
 pkg install tur-repo x11-repo -y
 pkg install termux-x11-nightly pulseaudio wget git xfce4 galculator -y
 pkg install zen-browser ristretto mpv -y
-pkg install webp-pixbuf-loader -y
+pkg install webp-pixbuf-loader libheif -y
 
 termux-setup-storage
 
