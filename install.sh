@@ -17,7 +17,8 @@ pkg update
 pkg upgrade -y
 pkg install tur-repo x11-repo -y
 pkg install termux-x11-nightly pulseaudio wget git xfce4 galculator -y
-pkg install zen-browser -y
+pkg install zen-browser ristretto -y
+pkg install webp-pixbuf-loader -y
 
 termux-setup-storage
 
@@ -245,6 +246,15 @@ pkg install libreoffice mousepad featherpad gimp -y
 
 xdg-mime default mousepad.desktop text/plain
 xdg-mime default featherpad.desktop text/markdown
+xdg-mime default org.xfce.ristretto.desktop image/png
+xdg-mime default org.xfce.ristretto.desktop image/gif
+xdg-mime default org.xfce.ristretto.desktop image/jpeg
+xdg-mime default org.xfce.ristretto.desktop image/webp
+xdg-mime default org.xfce.ristretto.desktop image/heic
+xdg-mime default org.xfce.ristretto.desktop image/heif
+xdg-mime default org.xfce.ristretto.desktop image/jpg
+xdg-mime default org.xfce.ristretto.desktop image/bmp
+xdg-mime default org.xfce.ristretto.desktop image/ico
 
 mkdir -p ~/.local/share/fonts
 git clone --no-checkout --depth 1 https://github.com/ojanemwe/portable-pc-coding.git temp_repo
