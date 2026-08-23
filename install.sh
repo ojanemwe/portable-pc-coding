@@ -142,11 +142,6 @@ run_stage "TAHAP 5/7 - Membuat Wrapper dan Shortcut AI Agent"
 
 mkdir -p ~/bin ~/Desktop
 
-cat << 'EOF_PROOT' > ~/bin/proot
-#!/data/data/com.termux/files/usr/bin/bash
-exec proot-distro login ubuntu
-EOF_PROOT
-
 cat << 'EOF_OPENCODE' > ~/bin/opencode
 #!/data/data/com.termux/files/usr/bin/bash
 exec proot-distro login ubuntu -- opencode
@@ -157,10 +152,14 @@ cat << 'EOF_9ROUTER' > ~/bin/9router
 exec proot-distro login ubuntu -- 9router
 EOF_9ROUTER
 
-chmod +x ~/bin/proot ~/bin/opencode ~/bin/9router
+chmod +x ~/bin/opencode ~/bin/9router
 
-if ! grep -qxF 'export PATH="$HOME/bin:$PATH"' ~/.bashrc 2>/dev/null; then
-    echo 'export PATH="$HOME/bin:$PATH"' >> ~/.bashrc
+if ! grep -qxF 'export PATH="$PATH:$HOME/bin"' ~/.bashrc 2>/dev/null; then
+    echo 'export PATH="$PATH:$HOME/bin"' >> ~/.bashrc
+fi
+
+if ! grep -qxF 'alias proot="proot-distro login ubuntu"' ~/.bashrc 2>/dev/null; then
+    echo 'alias proot="proot-distro login ubuntu"' >> ~/.bashrc
 fi
 
 cat << 'EOF_TERMINAL' > ~/Desktop/Terminal-PRoot.desktop
