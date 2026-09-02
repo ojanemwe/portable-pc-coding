@@ -31,6 +31,11 @@ Langkah ini menyiapkan pondasi aplikasi dan perizinan sistem Android.
     ```
 	curl -sL https://raw.githubusercontent.com/ojanemwe/portable-pc-coding/main/install.sh -o ~/install.sh && bash ~/install.sh
 	```
+
+    Pilihan untuk PC Standard Aplikasi PRoot dan AI Agent:
+    ```
+	curl -sL https://raw.githubusercontent.com/ojanemwe/portable-pc-coding/main/office-only.sh -o ~/office-only.sh && bash ~/office-only.sh
+	```
 > Cukup dengan sekali Salin dan tempel, proses instalasi akan berjalan Secara interaktif dan akan meng-install semua paket yang akan saya terangkan dibawah:
 >
 

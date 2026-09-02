@@ -123,17 +123,17 @@ xfconf-query -c xfce4-desktop -p /desktop-icons/file-icons/show-filesystem -s fa
 # ============================================================
 # 4. Lingkungan Vibe Coding - bagian Termux Native
 # ============================================================
-run_stage "TAHAP 4/7 - Menyiapkan PRoot Ubuntu"
+run_stage "TAHAP 4/7 - Menyiapkan PRoot Debian"
 
 pkg install geany proot-distro -y
 
 mkdir -p ~/.9router ~/.config ~/.local-proot ~/.cache-proot ~/workspace ~/Downloads
 
-if proot-distro login ubuntu -- true >/dev/null 2>&1; then
-    echo "Ubuntu PRoot sudah tersedia."
+if proot-distro login debian -- true >/dev/null 2>&1; then
+    echo "Debian PRoot sudah tersedia."
 else
-    echo "Menginstall Ubuntu PRoot..."
-    proot-distro install ubuntu
+    echo "Menginstall Debian PRoot..."
+    proot-distro install debian
 fi
 
 # ============================================================
@@ -145,12 +145,12 @@ mkdir -p ~/bin ~/Desktop
 
 cat << 'EOF_OPENCODE' > ~/bin/opencode
 #!/data/data/com.termux/files/usr/bin/bash
-exec proot-distro login ubuntu -- opencode
+exec proot-distro login debian -- opencode
 EOF_OPENCODE
 
 cat << 'EOF_9ROUTER' > ~/bin/9router
 #!/data/data/com.termux/files/usr/bin/bash
-exec proot-distro login ubuntu -- 9router
+exec proot-distro login debian -- 9router
 EOF_9ROUTER
 
 chmod +x ~/bin/opencode ~/bin/9router
@@ -159,8 +159,8 @@ if ! grep -qxF 'export PATH="$PATH:$HOME/bin"' ~/.bashrc 2>/dev/null; then
     echo 'export PATH="$PATH:$HOME/bin"' >> ~/.bashrc
 fi
 
-if ! grep -qxF 'alias proot="proot-distro login ubuntu"' ~/.bashrc 2>/dev/null; then
-    echo 'alias proot="proot-distro login ubuntu"' >> ~/.bashrc
+if ! grep -qxF 'alias proot="proot-distro login debian"' ~/.bashrc 2>/dev/null; then
+    echo 'alias proot="proot-distro login debian"' >> ~/.bashrc
 fi
 
 cat << 'EOF_TERMINAL' > ~/Desktop/Terminal-PRoot.desktop
@@ -168,8 +168,8 @@ cat << 'EOF_TERMINAL' > ~/Desktop/Terminal-PRoot.desktop
 Version=1.0
 Type=Application
 Name=Terminal PRoot
-Comment=Buka terminal dan otomatis login ke PRoot Ubuntu
-Exec=xfce4-terminal -e "proot-distro login ubuntu"
+Comment=Buka terminal dan otomatis login ke PRoot debian
+Exec=xfce4-terminal -e "proot-distro login debian"
 Icon=utilities-terminal
 Terminal=false
 Categories=System;TerminalEmulator;
@@ -182,7 +182,7 @@ Version=1.0
 Type=Application
 Name=OpenCode
 Comment=Menjalankan OpenCode pada direktori root didalam PRoot
-Exec=xfce4-terminal --title="OpenCode" -e "proot-distro login ubuntu -- opencode"
+Exec=xfce4-terminal --title="OpenCode" -e "proot-distro login debian -- opencode"
 Icon=utilities-terminal
 Terminal=false
 Categories=Development;
@@ -195,7 +195,7 @@ Version=1.0
 Type=Application
 Name=9router
 Comment=Menjalankan 9router pada PRoot
-Exec=xfce4-terminal --title="9router" -e "proot-distro login ubuntu -- 9router"
+Exec=xfce4-terminal --title="9router" -e "proot-distro login debian -- 9router"
 Icon=utilities-terminal
 Terminal=false
 Categories=Development;
@@ -208,7 +208,7 @@ Version=1.0
 Type=Application
 Name=AI Workspace
 Comment=Start 9Router in Tray and OpenCode in Workspace
-Exec=proot-distro login ubuntu -- bash -c '9router --tray & until curl -s http://localhost:20128 >/dev/null; do sleep 1; done; cd /root/workspace && exec opencode'
+Exec=proot-distro login debian -- bash -c '9router --tray & until curl -s http://localhost:20128 >/dev/null; do sleep 1; done; cd /root/workspace && exec opencode'
 Terminal=true
 StartupNotify=false
 EOF_AI
@@ -260,14 +260,24 @@ mv fonts/* ~/.local/share/fonts/
 cd ..
 rm -rf temp_repo
 
-# ============================================================
-# Ubuntu PRoot: lanjutkan dengan ubuntu-setup.sh
-# ============================================================
-run_stage "Menjalankan ubuntu-setup.sh di Ubuntu PRoot"
+git clone --depth=1 https://github.com/vinceliuice/Orchis-theme.git /tmp/Orchis-theme
+cd /tmp/Orchis-theme
+./install.sh -d ~/.themes
+rm -rf /tmp/Orchis-theme
 
-proot-distro login ubuntu -- bash -c \
-'curl -sL https://raw.githubusercontent.com/ojanemwe/portable-pc-coding/main/ubuntu-setup.sh | bash'
+git clone --depth=1 https://github.com/vinceliuice/Colloid-icon-theme.git /tmp/Colloid-icon-theme
+cd /tmp/Colloid-icon-theme
+./install.sh -d ~/.icons
+rm -rf /tmp/Colloid-icon-theme
+
+# ============================================================
+# Debian PRoot: lanjutkan dengan debian-setup.sh
+# ============================================================
+run_stage "Menjalankan debian-setup.sh di Debian PRoot"
+
+proot-distro login debian -- bash -c \
+'curl -sL https://raw.githubusercontent.com/ojanemwe/portable-pc-coding/main/debian-setup.sh | bash'
 
 run_stage "INSTALASI TERMUX NATIVE SELESAI"
-echo "Tahap Termux Native 1-7 selesai dan ubuntu-setup.sh telah dijalankan."
+echo "Tahap Termux Native 1-7 selesai dan debian-setup.sh telah dijalankan."
 echo "Gunakan 'pc' untuk membuka Desktop Xfce4."
