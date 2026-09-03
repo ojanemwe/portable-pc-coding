@@ -170,37 +170,233 @@ rm -rf temp_repo
 # ============================================================
 run_stage "TAHAP 6/6 - Penambahan Pilihan Tema"
 
-TERMUX_PREFIX="${PREFIX:-/data/data/com.termux/files/usr}"
-export PATH="$TERMUX_PREFIX/bin:$PATH"
+# Jalankan installer Stage 6 yang aman dan terisolasi.
+# File installer akan menggunakan tar.gz upstream, tanpa git clone,
+# tanpa menimpa getent Termux, dan memasang ke ~/.local/share.
+STAGE6_SCRIPT="$HOME/.cache/termux-xfce-stage6.sh"
+mkdir -p "$(dirname "$STAGE6_SCRIPT")"
+cat > "$STAGE6_SCRIPT" <<'STAGE6_EOF'
+#!/data/data/com.termux/files/usr/bin/bash
 
-cat << 'EOF' > "$TERMUX_PREFIX/bin/getent"
-#!/bin/sh
-echo "$USER:x:1000:1000:$USER:$HOME:/bin/sh"
-EOF
-chmod +x "$TERMUX_PREFIX/bin/getent"
+# ============================================================
+# STAGE 6 - Xfce GTK Themes + Colloid Icons for Termux:X11
+#
+# Designed for native Termux + Xfce4.
+# - Uses GitHub release/source tar.gz instead of git clone.
+# - Does NOT overwrite Termux's real `getent` command.
+# - Gives upstream installers an isolated compatibility shim.
+# - Installs into user data directories detected by Xfce:
+#     ~/.local/share/themes
+#     ~/.local/share/icons
+# - Leaves no repository checkout behind.
+# ============================================================
 
-mkdir -p "$TERMUX_PREFIX/tmp"
-git clone https://github.com/vinceliuice/Orchis-theme.git "$TERMUX_PREFIX/tmp/Orchis-theme"
-sed -i 's/getent passwd.*/echo "$USER:x:1000:1000:$USER:$HOME:\/bin\/sh"/' "$TERMUX_PREFIX/tmp/Orchis-theme/libs/lib-core.sh"
-cd "$TERMUX_PREFIX/tmp/Orchis-theme"
-./install.sh -d ~/.themes
-cd ~
-rm -rf "$TERMUX_PREFIX/tmp/Orchis-theme"
+set -Eeuo pipefail
 
-git clone https://github.com/vinceliuice/WhiteSur-gtk-theme.git "$TERMUX_PREFIX/tmp/WhiteSur-gtk-theme"
-sed -i 's/getent passwd.*/echo "$USER:x:1000:1000:$USER:$HOME:\/bin\/sh"/' "$TERMUX_PREFIX/tmp/WhiteSur-gtk-theme/libs/lib-core.sh"
-cd "$TERMUX_PREFIX/tmp/WhiteSur-gtk-theme"
-./install.sh -d ~/.themes
-cd ~
-rm -rf "$TERMUX_PREFIX/tmp/WhiteSur-gtk-theme"
+PREFIX="${PREFIX:-/data/data/com.termux/files/usr}"
+export PATH="$PREFIX/bin:$PATH"
 
-git clone https://github.com/vinceliuice/Colloid-icon-theme.git "$TERMUX_PREFIX/tmp/Colloid-icon-theme"
-sed -i 's/getent passwd.*/echo "$USER:x:1000:1000:$USER:$HOME:\/bin\/sh"/' "$TERMUX_PREFIX/tmp/Colloid-icon-theme/libs/lib-core.sh"
-cd "$TERMUX_PREFIX/tmp/Colloid-icon-theme"
-./install.sh -d ~/.icons
-cd ~
-rm -rf "$TERMUX_PREFIX/tmp/Colloid-icon-theme"
+THEME_DIR="$HOME/.local/share/themes"
+ICON_DIR="$HOME/.local/share/icons"
+WORK_DIR="${TMPDIR:-$PREFIX/tmp}/xfce-theme-install-$$"
+SHIM_DIR="$WORK_DIR/shims"
 
+# Latest releases verified from upstream release pages at the time of writing.
+# Orchis: 2026-07-07
+# WhiteSur: 2026-07-07
+# Colloid icons: 2025-07-19
+ORCHIS_TAG="2026-07-07"
+WHITESUR_TAG="2026-07-07"
+COLLOID_TAG="2025-07-19"
+
+ORCHIS_URL="https://github.com/vinceliuice/Orchis-theme/archive/refs/tags/${ORCHIS_TAG}.tar.gz"
+WHITESUR_URL="https://github.com/vinceliuice/WhiteSur-gtk-theme/archive/refs/tags/${WHITESUR_TAG}.tar.gz"
+COLLOID_URL="https://github.com/vinceliuice/Colloid-icon-theme/archive/refs/tags/${COLLOID_TAG}.tar.gz"
+
+cleanup() {
+    rm -rf "$WORK_DIR"
+}
+trap cleanup EXIT
+
+banner() {
+    printf '\n============================================================\n'
+    printf ' %s\n' "$1"
+    printf '============================================================\n\n'
+}
+
+fail() {
+    printf '\n[ERROR] %s\n' "$1" >&2
+    printf '[ERROR] Log lengkap tersimpan sementara di: %s\n' "$WORK_DIR" >&2
+    exit 1
+}
+
+trap 'printf "\\n[ERROR] Gagal pada baris %s. Periksa pesan di atas.\\n" "$LINENO" >&2' ERR
+
+banner "TAHAP 6/6 - Instalasi Orchis, WhiteSur & Colloid"
+
+mkdir -p "$THEME_DIR" "$ICON_DIR" "$WORK_DIR" "$SHIM_DIR"
+
+# ------------------------------------------------------------
+# 1. Pastikan dependency yang relevan tersedia.
+# ------------------------------------------------------------
+# sassc diperlukan oleh Orchis/WhiteSur untuk menghasilkan CSS.
+# gtk-update-icon-cache diperlukan untuk cache tema ikon.
+# tar + wget biasanya sudah tersedia di Termux; tetap dicek.
+# ------------------------------------------------------------
+banner "6.1 - Memastikan paket pembangun tersedia"
+
+pkg update -y
+pkg install -y wget tar gzip sassc gtk-update-icon-cache
+
+command -v sassc >/dev/null 2>&1 || fail "sassc tidak tersedia setelah instalasi."
+command -v gtk-update-icon-cache >/dev/null 2>&1 || fail "gtk-update-icon-cache tidak tersedia."
+command -v tar >/dev/null 2>&1 || fail "tar tidak tersedia."
+command -v wget >/dev/null 2>&1 || fail "wget tidak tersedia."
+
+# ------------------------------------------------------------
+# 2. Compatibility shim TERISOLASI untuk getent.
+# ------------------------------------------------------------
+# Jangan pernah menulis /data/data/com.termux/.../bin/getent.
+# Versi terbaru Orchis membaca informasi user lewat:
+#   getent passwd ...
+# Di Termux, implementasi/utilitas Linux ini dapat berbeda/tidak ada.
+# Shim hanya hidup selama script ini dan didahulukan di PATH.
+# ------------------------------------------------------------
+REAL_GETENT="$(command -v getent 2>/dev/null || true)"
+cat > "$SHIM_DIR/getent" <<'SHIM'
+#!/data/data/com.termux/files/usr/bin/bash
+
+REAL_GETENT="${THEME_INSTALL_REAL_GETENT:-}"
+
+if [[ "${1:-}" == "passwd" ]]; then
+    requested="${2:-${USER:-$(id -un)}}"
+    current="${USER:-$(id -un)}"
+
+    if [[ "$requested" == "$current" ]]; then
+        printf '%s:x:1000:1000:%s:%s:%s\n' \
+            "$current" \
+            "$current" \
+            "$HOME" \
+            "${SHELL:-/data/data/com.termux/files/usr/bin/bash}"
+        exit 0
+    fi
+fi
+
+if [[ -n "$REAL_GETENT" && -x "$REAL_GETENT" ]]; then
+    exec "$REAL_GETENT" "$@"
+fi
+
+exit 2
+SHIM
+chmod +x "$SHIM_DIR/getent"
+export THEME_INSTALL_REAL_GETENT="$REAL_GETENT"
+export PATH="$SHIM_DIR:$PATH"
+
+# ------------------------------------------------------------
+# Helper: download + validate a tarball.
+# ------------------------------------------------------------
+download_tarball() {
+    local url="$1"
+    local out="$2"
+
+    printf '[INFO] Download: %s\n' "$url"
+    wget -q --show-progress --timeout=30 --tries=3 -O "$out" "$url" \
+        || fail "Gagal mengunduh $url"
+
+    [[ -s "$out" ]] || fail "Arsip kosong: $out"
+    tar -tzf "$out" >/dev/null 2>&1 \
+        || fail "Arsip rusak/tidak valid: $out"
+}
+
+# ------------------------------------------------------------
+# 3. Orchis
+# ------------------------------------------------------------
+banner "6.2 - Install Orchis GTK/XFWM"
+
+ORCHIS_TGZ="$WORK_DIR/Orchis-theme.tar.gz"
+ORCHIS_ROOT="$WORK_DIR/orchis"
+mkdir -p "$ORCHIS_ROOT"
+
+download_tarball "$ORCHIS_URL" "$ORCHIS_TGZ"
+tar -xzf "$ORCHIS_TGZ" -C "$ORCHIS_ROOT"
+ORCHIS_SRC="$(find "$ORCHIS_ROOT" -mindepth 1 -maxdepth 1 -type d -name 'Orchis-theme-*' -print -quit)"
+[[ -n "$ORCHIS_SRC" && -d "$ORCHIS_SRC" ]] || fail "Folder Orchis hasil ekstraksi tidak ditemukan."
+
+# Upstream installer is used only as a BUILD/INSTALL engine against the
+# extracted tar.gz. No clone and no modification of upstream files.
+(
+    cd "$ORCHIS_SRC"
+    bash ./install.sh -d "$THEME_DIR"
+)
+
+# ------------------------------------------------------------
+# 4. WhiteSur
+# ------------------------------------------------------------
+banner "6.3 - Install WhiteSur GTK/XFWM"
+
+WHITESUR_TGZ="$WORK_DIR/WhiteSur-gtk-theme.tar.gz"
+WHITESUR_ROOT="$WORK_DIR/whitesur"
+mkdir -p "$WHITESUR_ROOT"
+
+download_tarball "$WHITESUR_URL" "$WHITESUR_TGZ"
+tar -xzf "$WHITESUR_TGZ" -C "$WHITESUR_ROOT"
+WHITESUR_SRC="$(find "$WHITESUR_ROOT" -mindepth 1 -maxdepth 1 -type d -name 'WhiteSur-gtk-theme-*' -print -quit)"
+[[ -n "$WHITESUR_SRC" && -d "$WHITESUR_SRC" ]] || fail "Folder WhiteSur hasil ekstraksi tidak ditemukan."
+
+(
+    cd "$WHITESUR_SRC"
+    bash ./install.sh -d "$THEME_DIR"
+)
+
+# ------------------------------------------------------------
+# 5. Colloid Icons
+# ------------------------------------------------------------
+banner "6.4 - Install Colloid Icon Theme"
+
+COLLOID_TGZ="$WORK_DIR/Colloid-icon-theme.tar.gz"
+COLLOID_ROOT="$WORK_DIR/colloid"
+mkdir -p "$COLLOID_ROOT"
+
+download_tarball "$COLLOID_URL" "$COLLOID_TGZ"
+tar -xzf "$COLLOID_TGZ" -C "$COLLOID_ROOT"
+COLLOID_SRC="$(find "$COLLOID_ROOT" -mindepth 1 -maxdepth 1 -type d -name 'Colloid-icon-theme-*' -print -quit)"
+[[ -n "$COLLOID_SRC" && -d "$COLLOID_SRC" ]] || fail "Folder Colloid hasil ekstraksi tidak ditemukan."
+
+(
+    cd "$COLLOID_SRC"
+    ./install.sh -d "$ICON_DIR"
+)
+
+# ------------------------------------------------------------
+# 6. Refresh caches / make sure Xfce can see the themes.
+# ------------------------------------------------------------
+banner "6.5 - Refresh Xfce Theme/Icon Cache"
+
+# GTK icon cache is safe to refresh for every directory containing index.theme.
+if command -v gtk-update-icon-cache >/dev/null 2>&1; then
+    find "$ICON_DIR" -mindepth 1 -maxdepth 1 -type d -name 'Colloid*' \
+        -exec gtk-update-icon-cache -f -t {} \; 2>/dev/null || true
+fi
+
+# User-level Xfce settings: do not force a theme here.
+# This keeps both Orchis and WhiteSur available in Appearance.
+# The user can select:
+#   Settings -> Appearance -> Style
+# and:
+#   Settings -> Appearance -> Icons
+
+printf '\n[OK] Tema dan ikon selesai diproses.\n'
+printf '[OK] GTK themes : %s\n' "$THEME_DIR"
+printf '[OK] Icons      : %s\n' "$ICON_DIR"
+printf '\n[INFO] Buka/refresh Xfce4 lalu cek:\n'
+printf '       Settings -> Appearance -> Style\n'
+printf '       Settings -> Appearance -> Icons\n'
+printf '\n[INFO] Tidak ada /bin/getent Termux yang ditimpa oleh script ini.\n'
+
+STAGE6_EOF
+chmod +x "$STAGE6_SCRIPT"
+"$STAGE6_SCRIPT"
+rm -f "$STAGE6_SCRIPT"
 
 run_stage "INSTALASI TERMUX NATIVE SELESAI"
 echo "Tahap Termux Native 1-6 selesai dan ubuntu-setup.sh telah dijalankan."
