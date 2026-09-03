@@ -664,5 +664,5 @@ printf '[INFO] Tidak ada /bin/sudo Termux yang ditimpa.\n'
 
 run_stage "INSTALASI TERMUX NATIVE SELESAI"
 
-echo "Tahap Termux Native 1-6 selesai dan ubuntu-setup.sh telah dijalankan."
+echo "Tahap Termux Native 1-6 selesai"
 echo "Gunakan 'pc' untuk membuka Desktop Xfce4."
