@@ -223,12 +223,12 @@ mkdir -p "$THEME_DIR" "$ICON_DIR" "$WORK_DIR" "$SHIM_DIR"
 banner "6.1 - Memastikan paket pembangun tersedia"
 
 pkg update -y
-pkg install -y wget tar gzip sassc glib libxml2 gtk-update-icon-cache
+pkg install -y wget tar gzip sassc glib libxml2 libxml2-utils gtk-update-icon-cache
 
 command -v sassc >/dev/null 2>&1 || fail "sassc tidak tersedia setelah instalasi."
 command -v gtk-update-icon-cache >/dev/null 2>&1 || fail "gtk-update-icon-cache tidak tersedia."
 command -v glib-compile-resources >/dev/null 2>&1 || fail "glib-compile-resources tidak tersedia setelah instalasi paket glib."
-command -v xmllint >/dev/null 2>&1 || fail "xmllint tidak tersedia setelah instalasi paket libxml2."
+command -v xmllint >/dev/null 2>&1 || fail "xmllint tidak tersedia setelah instalasi paket libxml2-utils."
 command -v tar >/dev/null 2>&1 || fail "tar tidak tersedia."
 command -v wget >/dev/null 2>&1 || fail "wget tidak tersedia."
 
