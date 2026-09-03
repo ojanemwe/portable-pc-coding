@@ -168,29 +168,6 @@ rm -rf temp_repo
 # ============================================================
 # 6. Penambahan Pilihan Tema
 # ============================================================
-run_stage "TAHAP 6/6 - Penambahan Pilihan Tema"
-
-# Jalankan installer Stage 6 yang aman dan terisolasi.
-# File installer akan menggunakan tar.gz upstream, tanpa git clone,
-# tanpa menimpa getent Termux, dan memasang ke ~/.local/share.
-STAGE6_SCRIPT="$HOME/.cache/termux-xfce-stage6.sh"
-mkdir -p "$(dirname "$STAGE6_SCRIPT")"
-cat > "$STAGE6_SCRIPT" <<'STAGE6_EOF'
-#!/data/data/com.termux/files/usr/bin/bash
-
-# ============================================================
-# STAGE 6 - Xfce GTK Themes + Colloid Icons for Termux:X11
-#
-# Designed for native Termux + Xfce4.
-# - Uses GitHub release/source tar.gz instead of git clone.
-# - Does NOT overwrite Termux's real `getent` command.
-# - Gives upstream installers an isolated compatibility shim.
-# - Installs into user data directories detected by Xfce:
-#     ~/.local/share/themes
-#     ~/.local/share/icons
-# - Leaves no repository checkout behind.
-# ============================================================
-
 set -Eeuo pipefail
 
 PREFIX="${PREFIX:-/data/data/com.termux/files/usr}"
@@ -246,10 +223,12 @@ mkdir -p "$THEME_DIR" "$ICON_DIR" "$WORK_DIR" "$SHIM_DIR"
 banner "6.1 - Memastikan paket pembangun tersedia"
 
 pkg update -y
-pkg install -y wget tar gzip sassc gtk-update-icon-cache
+pkg install -y wget tar gzip sassc glib libxml2 gtk-update-icon-cache
 
 command -v sassc >/dev/null 2>&1 || fail "sassc tidak tersedia setelah instalasi."
 command -v gtk-update-icon-cache >/dev/null 2>&1 || fail "gtk-update-icon-cache tidak tersedia."
+command -v glib-compile-resources >/dev/null 2>&1 || fail "glib-compile-resources tidak tersedia setelah instalasi paket glib."
+command -v xmllint >/dev/null 2>&1 || fail "xmllint tidak tersedia setelah instalasi paket libxml2."
 command -v tar >/dev/null 2>&1 || fail "tar tidak tersedia."
 command -v wget >/dev/null 2>&1 || fail "wget tidak tersedia."
 
@@ -343,6 +322,18 @@ tar -xzf "$WHITESUR_TGZ" -C "$WHITESUR_ROOT"
 WHITESUR_SRC="$(find "$WHITESUR_ROOT" -mindepth 1 -maxdepth 1 -type d -name 'WhiteSur-gtk-theme-*' -print -quit)"
 [[ -n "$WHITESUR_SRC" && -d "$WHITESUR_SRC" ]] || fail "Folder WhiteSur hasil ekstraksi tidak ditemukan."
 
+# WhiteSur 2026.x has a known XFCE compatibility problem: install_themes()
+# calls the GNOME-shell builder even when gnome-shell is not installed.
+# On native Termux/XFCE this can make sassc fail because GNOME_SHELL is empty.
+# Disable only the GNOME-shell-specific functions; GTK/XFWM installation remains.
+if command -v xfce4-session >/dev/null 2>&1 && ! command -v gnome-shell >/dev/null 2>&1; then
+    printf '[INFO] XFCE detected without gnome-shell; disabling WhiteSur GNOME Shell build.\n'
+    sed -i '/source "${REPO_DIR}\/libs\/lib-install.sh"/a\
+# Termux:Xfce compatibility override: skip GNOME Shell generation.
+shell_base() { return 0; }
+install_shelly() { return 0; }' "$WHITESUR_SRC/install.sh"
+fi
+
 (
     cd "$WHITESUR_SRC"
     bash ./install.sh -d "$THEME_DIR"
@@ -392,11 +383,6 @@ printf '\n[INFO] Buka/refresh Xfce4 lalu cek:\n'
 printf '       Settings -> Appearance -> Style\n'
 printf '       Settings -> Appearance -> Icons\n'
 printf '\n[INFO] Tidak ada /bin/getent Termux yang ditimpa oleh script ini.\n'
-
-STAGE6_EOF
-chmod +x "$STAGE6_SCRIPT"
-"$STAGE6_SCRIPT"
-rm -f "$STAGE6_SCRIPT"
 
 run_stage "INSTALASI TERMUX NATIVE SELESAI"
 echo "Tahap Termux Native 1-6 selesai dan ubuntu-setup.sh telah dijalankan."
