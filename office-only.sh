@@ -118,6 +118,7 @@ StartupNotify=false
 EOF_SHUTDOWN
 
 chmod +x ~/Desktop/shutdown.desktop
+xfconf-query -c xfce4-desktop -p /desktop-icons/file-icons/show-filesystem -s false
 
 # ============================================================
 # 4. Termux:Widget
@@ -170,12 +171,6 @@ rm -rf temp_repo
 # ============================================================
 run_stage "TAHAP 6/6 - Penambahan Pilihan Tema"
 
-pkg install -y xfce4-whiskermenu-plugin
-xfconf-query -c xfce4-panel -l -v | grep applicationsmenu
-xfconf-query -c xfce4-panel -p /plugins/plugin-1 -s whiskermenu
-xfconf-query -c xfce4-panel -l -v | grep whiskermenu
-xfconf-query -c xfce4-panel -p /plugins/plugin-1/button-title -n -t string -s "Menu"
-
 git clone --depth=1 https://github.com/vinceliuice/Orchis-theme.git /tmp/Orchis-theme
 cd /tmp/Orchis-theme
 ./install.sh -d ~/.themes
@@ -191,8 +186,6 @@ cd /tmp/Colloid-icon-theme
 ./install.sh -d ~/.icons
 rm -rf /tmp/Colloid-icon-theme
 
-
-
 run_stage "INSTALASI TERMUX NATIVE SELESAI"
-echo "Tahap Termux Native 1-7 selesai dan ubuntu-setup.sh telah dijalankan."
+echo "Tahap Termux Native 1-6 selesai dan ubuntu-setup.sh telah dijalankan."
 echo "Gunakan 'pc' untuk membuka Desktop Xfce4."
