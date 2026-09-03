@@ -168,6 +168,7 @@ rm -rf temp_repo
 # ============================================================
 # 6. Penambahan Pilihan Tema
 # ============================================================
+
 set -Eeuo pipefail
 
 PREFIX="${PREFIX:-/data/data/com.termux/files/usr}"
@@ -175,13 +176,13 @@ export PATH="$PREFIX/bin:$PATH"
 
 THEME_DIR="$HOME/.local/share/themes"
 ICON_DIR="$HOME/.local/share/icons"
+
 WORK_DIR="${TMPDIR:-$PREFIX/tmp}/xfce-theme-install-$$"
 SHIM_DIR="$WORK_DIR/shims"
 
-# Latest releases verified from upstream release pages at the time of writing.
-# Orchis: 2026-07-07
-# WhiteSur: 2026-07-07
-# Colloid icons: 2025-07-19
+# ------------------------------------------------------------
+# Versi release yang digunakan
+# ------------------------------------------------------------
 ORCHIS_TAG="2026-07-07"
 WHITESUR_TAG="2026-07-07"
 COLLOID_TAG="2025-07-19"
@@ -190,58 +191,96 @@ ORCHIS_URL="https://github.com/vinceliuice/Orchis-theme/archive/refs/tags/${ORCH
 WHITESUR_URL="https://github.com/vinceliuice/WhiteSur-gtk-theme/archive/refs/tags/${WHITESUR_TAG}.tar.gz"
 COLLOID_URL="https://github.com/vinceliuice/Colloid-icon-theme/archive/refs/tags/${COLLOID_TAG}.tar.gz"
 
+# ------------------------------------------------------------
+# Cleanup
+# ------------------------------------------------------------
 cleanup() {
     rm -rf "$WORK_DIR"
 }
+
 trap cleanup EXIT
 
+# ------------------------------------------------------------
+# Helper: banner
+# ------------------------------------------------------------
 banner() {
     printf '\n============================================================\n'
     printf ' %s\n' "$1"
     printf '============================================================\n\n'
 }
 
+# ------------------------------------------------------------
+# Helper: fail
+# ------------------------------------------------------------
 fail() {
     printf '\n[ERROR] %s\n' "$1" >&2
     printf '[ERROR] Log lengkap tersimpan sementara di: %s\n' "$WORK_DIR" >&2
     exit 1
 }
 
-trap 'printf "\\n[ERROR] Gagal pada baris %s. Periksa pesan di atas.\\n" "$LINENO" >&2' ERR
+trap 'printf "\n[ERROR] Gagal pada baris %s. Periksa pesan di atas.\n" "$LINENO" >&2' ERR
 
 banner "TAHAP 6/6 - Instalasi Orchis, WhiteSur & Colloid"
 
 mkdir -p "$THEME_DIR" "$ICON_DIR" "$WORK_DIR" "$SHIM_DIR"
 
-# ------------------------------------------------------------
-# 1. Pastikan dependency yang relevan tersedia.
-# ------------------------------------------------------------
-# sassc diperlukan oleh Orchis/WhiteSur untuk menghasilkan CSS.
-# gtk-update-icon-cache diperlukan untuk cache tema ikon.
-# tar + wget biasanya sudah tersedia di Termux; tetap dicek.
-# ------------------------------------------------------------
+# ============================================================
+# 6.1 - Dependency
+# ============================================================
+
 banner "6.1 - Memastikan paket pembangun tersedia"
 
+# Semua dependency dipasang melalui PKG Termux.
+# TIDAK menggunakan apt.
+# TIDAK menggunakan sudo.
 pkg update -y
-pkg install -y wget tar gzip sassc glib libxml2 libxml2-utils gtk-update-icon-cache
 
-command -v sassc >/dev/null 2>&1 || fail "sassc tidak tersedia setelah instalasi."
-command -v gtk-update-icon-cache >/dev/null 2>&1 || fail "gtk-update-icon-cache tidak tersedia."
-command -v glib-compile-resources >/dev/null 2>&1 || fail "glib-compile-resources tidak tersedia setelah instalasi paket glib."
-command -v xmllint >/dev/null 2>&1 || fail "xmllint tidak tersedia setelah instalasi paket libxml2-utils."
-command -v tar >/dev/null 2>&1 || fail "tar tidak tersedia."
-command -v wget >/dev/null 2>&1 || fail "wget tidak tersedia."
+pkg install -y \
+    wget \
+    tar \
+    gzip \
+    sassc \
+    glib \
+    libxml2 \
+    libxml2-utils \
+    gtk-update-icon-cache
 
 # ------------------------------------------------------------
-# 2. Compatibility shim TERISOLASI untuk getent.
+# Verifikasi dependency
 # ------------------------------------------------------------
-# Jangan pernah menulis /data/data/com.termux/.../bin/getent.
-# Versi terbaru Orchis membaca informasi user lewat:
-#   getent passwd ...
-# Di Termux, implementasi/utilitas Linux ini dapat berbeda/tidak ada.
-# Shim hanya hidup selama script ini dan didahulukan di PATH.
-# ------------------------------------------------------------
+
+command -v sassc >/dev/null 2>&1 \
+    || fail "sassc tidak tersedia setelah instalasi."
+
+command -v gtk-update-icon-cache >/dev/null 2>&1 \
+    || fail "gtk-update-icon-cache tidak tersedia."
+
+command -v glib-compile-resources >/dev/null 2>&1 \
+    || fail "glib-compile-resources tidak tersedia setelah instalasi paket glib."
+
+command -v xmllint >/dev/null 2>&1 \
+    || fail "xmllint tidak tersedia setelah instalasi paket libxml2-utils."
+
+command -v tar >/dev/null 2>&1 \
+    || fail "tar tidak tersedia."
+
+command -v wget >/dev/null 2>&1 \
+    || fail "wget tidak tersedia."
+
+# ============================================================
+# 6.1a - Compatibility shim: getent
+# ============================================================
+
+# WhiteSur/Orchis dapat menggunakan:
+#     getent passwd ...
+#
+# Termux tidak selalu menyediakan getent seperti distro Linux.
+# Shim ini hanya dibuat di WORK_DIR dan hanya aktif selama
+# Stage 6.
+# ============================================================
+
 REAL_GETENT="$(command -v getent 2>/dev/null || true)"
+
 cat > "$SHIM_DIR/getent" <<'SHIM'
 #!/data/data/com.termux/files/usr/bin/bash
 
@@ -257,6 +296,7 @@ if [[ "${1:-}" == "passwd" ]]; then
             "$current" \
             "$HOME" \
             "${SHELL:-/data/data/com.termux/files/usr/bin/bash}"
+
         exit 0
     fi
 fi
@@ -267,126 +307,362 @@ fi
 
 exit 2
 SHIM
+
 chmod +x "$SHIM_DIR/getent"
+
 export THEME_INSTALL_REAL_GETENT="$REAL_GETENT"
+
+# ============================================================
+# 6.1b - Compatibility shim: sudo
+# ============================================================
+
+# PENTING:
+#
+# Android/Termux TIDAK DI-ROOT.
+#
+# Kita TIDAK memasang sudo.
+# Kita TIDAK memberikan privilege tambahan.
+#
+# WhiteSur hanya membutuhkan keberadaan command "sudo"
+# pada beberapa bagian installer, bahkan ketika instalasi
+# dilakukan ke direktori user.
+#
+# Karena semua target instalasi kita berada di:
+#
+#     $HOME/.local/share/themes
+#
+# tidak diperlukan privilege root.
+#
+# Shim ini hanya meneruskan command secara langsung sebagai
+# user Termux saat ini.
+# ============================================================
+
+cat > "$SHIM_DIR/sudo" <<'SHIM'
+#!/data/data/com.termux/files/usr/bin/bash
+
+# Tidak ada argument = tidak melakukan apa-apa.
+if [[ "$#" -eq 0 ]]; then
+    exit 0
+fi
+
+# Jalankan command langsung sebagai user Termux.
+# Tidak ada eskalasi privilege.
+exec "$@"
+SHIM
+
+chmod +x "$SHIM_DIR/sudo"
+
+# Shim harus berada di depan PATH agar:
+#
+#     which sudo
+#
+# menemukan shim tersebut.
 export PATH="$SHIM_DIR:$PATH"
 
 # ------------------------------------------------------------
-# Helper: download + validate a tarball.
+# Verifikasi shim
 # ------------------------------------------------------------
+
+command -v getent >/dev/null 2>&1 \
+    || fail "Shim getent gagal dibuat."
+
+command -v sudo >/dev/null 2>&1 \
+    || fail "Shim sudo gagal dibuat."
+
+# Pastikan sudo yang ditemukan memang shim kita.
+[[ "$(command -v sudo)" == "$SHIM_DIR/sudo" ]] \
+    || fail "PATH sudo tidak menunjuk ke shim Termux."
+
+printf '[INFO] sudo shim: %s\n' "$(command -v sudo)"
+printf '[INFO] getent shim: %s\n' "$(command -v getent)"
+
+# ============================================================
+# Helper: download + validate tarball
+# ============================================================
+
 download_tarball() {
     local url="$1"
     local out="$2"
 
     printf '[INFO] Download: %s\n' "$url"
-    wget -q --show-progress --timeout=30 --tries=3 -O "$out" "$url" \
+
+    wget \
+        -q \
+        --show-progress \
+        --timeout=30 \
+        --tries=3 \
+        -O "$out" \
+        "$url" \
         || fail "Gagal mengunduh $url"
 
-    [[ -s "$out" ]] || fail "Arsip kosong: $out"
+    [[ -s "$out" ]] \
+        || fail "Arsip kosong: $out"
+
     tar -tzf "$out" >/dev/null 2>&1 \
         || fail "Arsip rusak/tidak valid: $out"
 }
 
-# ------------------------------------------------------------
-# 3. Orchis
-# ------------------------------------------------------------
+# ============================================================
+# 6.2 - Install Orchis GTK/XFWM
+# ============================================================
+
 banner "6.2 - Install Orchis GTK/XFWM"
 
 ORCHIS_TGZ="$WORK_DIR/Orchis-theme.tar.gz"
 ORCHIS_ROOT="$WORK_DIR/orchis"
+
 mkdir -p "$ORCHIS_ROOT"
 
-download_tarball "$ORCHIS_URL" "$ORCHIS_TGZ"
-tar -xzf "$ORCHIS_TGZ" -C "$ORCHIS_ROOT"
-ORCHIS_SRC="$(find "$ORCHIS_ROOT" -mindepth 1 -maxdepth 1 -type d -name 'Orchis-theme-*' -print -quit)"
-[[ -n "$ORCHIS_SRC" && -d "$ORCHIS_SRC" ]] || fail "Folder Orchis hasil ekstraksi tidak ditemukan."
+download_tarball \
+    "$ORCHIS_URL" \
+    "$ORCHIS_TGZ"
 
-# Upstream installer is used only as a BUILD/INSTALL engine against the
-# extracted tar.gz. No clone and no modification of upstream files.
+tar -xzf "$ORCHIS_TGZ" -C "$ORCHIS_ROOT"
+
+ORCHIS_SRC="$(
+    find "$ORCHIS_ROOT" \
+        -mindepth 1 \
+        -maxdepth 1 \
+        -type d \
+        -name 'Orchis-theme-*' \
+        -print -quit
+)"
+
+[[ -n "$ORCHIS_SRC" && -d "$ORCHIS_SRC" ]] \
+    || fail "Folder Orchis hasil ekstraksi tidak ditemukan."
+
+printf '[INFO] Orchis source: %s\n' "$ORCHIS_SRC"
+
 (
     cd "$ORCHIS_SRC"
-    bash ./install.sh -d "$THEME_DIR"
+
+    bash ./install.sh \
+        -d "$THEME_DIR"
 )
 
-# ------------------------------------------------------------
-# 4. WhiteSur
-# ------------------------------------------------------------
+# ============================================================
+# 6.3 - Install WhiteSur GTK/XFWM
+# ============================================================
+
 banner "6.3 - Install WhiteSur GTK/XFWM"
 
 WHITESUR_TGZ="$WORK_DIR/WhiteSur-gtk-theme.tar.gz"
 WHITESUR_ROOT="$WORK_DIR/whitesur"
+
 mkdir -p "$WHITESUR_ROOT"
 
-download_tarball "$WHITESUR_URL" "$WHITESUR_TGZ"
-tar -xzf "$WHITESUR_TGZ" -C "$WHITESUR_ROOT"
-WHITESUR_SRC="$(find "$WHITESUR_ROOT" -mindepth 1 -maxdepth 1 -type d -name 'WhiteSur-gtk-theme-*' -print -quit)"
-[[ -n "$WHITESUR_SRC" && -d "$WHITESUR_SRC" ]] || fail "Folder WhiteSur hasil ekstraksi tidak ditemukan."
+download_tarball \
+    "$WHITESUR_URL" \
+    "$WHITESUR_TGZ"
 
-# WhiteSur 2026.x memanggil builder GNOME Shell meskipun
-# gnome-shell tidak terpasang. Pada Termux + XFCE, lewati
-# hanya bagian GNOME Shell; GTK dan XFWM tetap di-install.
-if command -v xfce4-session >/dev/null 2>&1 && ! command -v gnome-shell >/dev/null 2>&1; then
+tar -xzf "$WHITESUR_TGZ" -C "$WHITESUR_ROOT"
+
+WHITESUR_SRC="$(
+    find "$WHITESUR_ROOT" \
+        -mindepth 1 \
+        -maxdepth 1 \
+        -type d \
+        -name 'WhiteSur-gtk-theme-*' \
+        -print -quit
+)"
+
+[[ -n "$WHITESUR_SRC" && -d "$WHITESUR_SRC" ]] \
+    || fail "Folder WhiteSur hasil ekstraksi tidak ditemukan."
+
+printf '[INFO] WhiteSur source: %s\n' "$WHITESUR_SRC"
+
+# ------------------------------------------------------------
+# WhiteSur + XFCE compatibility
+# ------------------------------------------------------------
+#
+# WhiteSur release 2026.x mempunyai masalah pada installer:
+#
+# install_themes()
+#     |
+#     +-- install_theemy()
+#     |
+#     +-- shell_base()
+#     |
+#     +-- install_shelly()
+#
+# install_shelly() adalah builder GNOME Shell.
+#
+# Pada XFCE tanpa gnome-shell, builder tersebut tidak diperlukan
+# dan dapat menyebabkan sassc error karena GNOME_SHELL kosong.
+#
+# Kita hanya menonaktifkan PEMANGGILAN:
+#
+#     shell_base
+#     install_shelly
+#
+# GTK dan XFWM tetap diproses oleh install_theemy().
+#
+# Referensi masalah upstream:
+# WhiteSur issue #1401.
+# ------------------------------------------------------------
+
+if command -v xfce4-session >/dev/null 2>&1 \
+    && ! command -v gnome-shell >/dev/null 2>&1; then
+
     printf '[INFO] XFCE detected without gnome-shell; skipping GNOME Shell build.\n'
 
-    # Skip shell_base() karena hanya digunakan untuk GNOME Shell.
-    sed -i '/^[[:space:]]*shell_base "${color}"/s/^/# /' \
-        "$WHITESUR_SRC/libs/lib-install.sh"
+    WHITESUR_LIB_INSTALL="$WHITESUR_SRC/libs/lib-install.sh"
 
-    # Skip install_shelly() karena hanya digunakan untuk GNOME Shell.
-    sed -i '/^[[:space:]]*install_shelly "${color}"/s/^/# /' \
-        "$WHITESUR_SRC/libs/lib-install.sh"
+    [[ -f "$WHITESUR_LIB_INSTALL" ]] \
+        || fail "WhiteSur: libs/lib-install.sh tidak ditemukan."
+
+    # --------------------------------------------------------
+    # Pastikan struktur installer WhiteSur yang kita patch
+    # memang sesuai dengan release yang kita download.
+    # --------------------------------------------------------
+
+    grep -qE '^[[:space:]]*shell_base([[:space:]]|$)' \
+        "$WHITESUR_LIB_INSTALL" \
+        || fail "WhiteSur: pemanggilan/fungsi shell_base tidak ditemukan."
+
+    grep -qE '^[[:space:]]*install_shelly([[:space:]]|$)' \
+        "$WHITESUR_LIB_INSTALL" \
+        || fail "WhiteSur: pemanggilan/fungsi install_shelly tidak ditemukan."
+
+    # --------------------------------------------------------
+    # Nonaktifkan pemanggilan shell_base().
+    #
+    # Hanya baris pemanggilan yang diawali whitespace +
+    # shell_base yang dikomentari.
+    # --------------------------------------------------------
+
+    sed -i \
+        '/^[[:space:]]*shell_base[[:space:]]*$/s/^/# /' \
+        "$WHITESUR_LIB_INSTALL"
+
+    # --------------------------------------------------------
+    # Nonaktifkan pemanggilan install_shelly().
+    #
+    # Fungsi install_shelly sendiri TIDAK dihapus.
+    # Hanya pemanggilannya yang dilewati.
+    # --------------------------------------------------------
+
+    sed -i \
+        '/^[[:space:]]*install_shelly[[:space:]]/s/^/# /' \
+        "$WHITESUR_LIB_INSTALL"
+
+    # --------------------------------------------------------
+    # Verifikasi patch.
+    # --------------------------------------------------------
+
+    if grep -nE '^[[:space:]]*shell_base[[:space:]]*$' \
+        "$WHITESUR_LIB_INSTALL" >/dev/null 2>&1; then
+
+        fail "WhiteSur: shell_base masih memiliki pemanggilan aktif."
+    fi
+
+    if grep -nE '^[[:space:]]*install_shelly[[:space:]]' \
+        "$WHITESUR_LIB_INSTALL" >/dev/null 2>&1; then
+
+        fail "WhiteSur: install_shelly masih memiliki pemanggilan aktif."
+    fi
+
+    printf '[INFO] WhiteSur GNOME Shell builder dinonaktifkan untuk XFCE.\n'
 fi
+
+# ------------------------------------------------------------
+# Jalankan installer WhiteSur.
+# ------------------------------------------------------------
 
 (
     cd "$WHITESUR_SRC"
-    bash ./install.sh -d "$THEME_DIR"
+
+    bash ./install.sh \
+        -d "$THEME_DIR"
 )
 
-# ------------------------------------------------------------
-# 5. Colloid Icons
-# ------------------------------------------------------------
+# ============================================================
+# 6.4 - Install Colloid Icon Theme
+# ============================================================
+
 banner "6.4 - Install Colloid Icon Theme"
 
 COLLOID_TGZ="$WORK_DIR/Colloid-icon-theme.tar.gz"
 COLLOID_ROOT="$WORK_DIR/colloid"
+
 mkdir -p "$COLLOID_ROOT"
 
-download_tarball "$COLLOID_URL" "$COLLOID_TGZ"
+download_tarball \
+    "$COLLOID_URL" \
+    "$COLLOID_TGZ"
+
 tar -xzf "$COLLOID_TGZ" -C "$COLLOID_ROOT"
-COLLOID_SRC="$(find "$COLLOID_ROOT" -mindepth 1 -maxdepth 1 -type d -name 'Colloid-icon-theme-*' -print -quit)"
-[[ -n "$COLLOID_SRC" && -d "$COLLOID_SRC" ]] || fail "Folder Colloid hasil ekstraksi tidak ditemukan."
+
+COLLOID_SRC="$(
+    find "$COLLOID_ROOT" \
+        -mindepth 1 \
+        -maxdepth 1 \
+        -type d \
+        -name 'Colloid-icon-theme-*' \
+        -print -quit
+)"
+
+[[ -n "$COLLOID_SRC" && -d "$COLLOID_SRC" ]] \
+    || fail "Folder Colloid hasil ekstraksi tidak ditemukan."
+
+printf '[INFO] Colloid source: %s\n' "$COLLOID_SRC"
 
 (
     cd "$COLLOID_SRC"
-    ./install.sh -d "$ICON_DIR"
+
+    ./install.sh \
+        -d "$ICON_DIR"
 )
 
-# ------------------------------------------------------------
-# 6. Refresh caches / make sure Xfce can see the themes.
-# ------------------------------------------------------------
+# ============================================================
+# 6.5 - Refresh Xfce Theme/Icon Cache
+# ============================================================
+
 banner "6.5 - Refresh Xfce Theme/Icon Cache"
 
-# GTK icon cache is safe to refresh for every directory containing index.theme.
+# GTK icon cache aman diperbarui untuk direktori yang
+# mempunyai index.theme.
+
 if command -v gtk-update-icon-cache >/dev/null 2>&1; then
-    find "$ICON_DIR" -mindepth 1 -maxdepth 1 -type d -name 'Colloid*' \
-        -exec gtk-update-icon-cache -f -t {} \; 2>/dev/null || true
+
+    find "$ICON_DIR" \
+        -mindepth 1 \
+        -maxdepth 1 \
+        -type d \
+        -name 'Colloid*' \
+        -exec gtk-update-icon-cache -f -t {} \; \
+        2>/dev/null \
+        || true
+
 fi
 
-# User-level Xfce settings: do not force a theme here.
-# This keeps both Orchis and WhiteSur available in Appearance.
-# The user can select:
+# ------------------------------------------------------------
+# Jangan memaksa theme tertentu.
+#
+# Kedua theme tetap tersedia di:
+#
 #   Settings -> Appearance -> Style
-# and:
+#
+# Icon theme:
+#
 #   Settings -> Appearance -> Icons
+# ------------------------------------------------------------
 
 printf '\n[OK] Tema dan ikon selesai diproses.\n'
 printf '[OK] GTK themes : %s\n' "$THEME_DIR"
 printf '[OK] Icons      : %s\n' "$ICON_DIR"
+
 printf '\n[INFO] Buka/refresh Xfce4 lalu cek:\n'
 printf '       Settings -> Appearance -> Style\n'
 printf '       Settings -> Appearance -> Icons\n'
-printf '\n[INFO] Tidak ada /bin/getent Termux yang ditimpa oleh script ini.\n'
+
+printf '\n[INFO] Instalasi dilakukan sebagai user Termux.\n'
+printf '[INFO] Tidak membutuhkan root Android.\n'
+printf '[INFO] Tidak membutuhkan sudo asli.\n'
+printf '[INFO] Tidak ada /bin/getent Termux yang ditimpa.\n'
+printf '[INFO] Tidak ada /bin/sudo Termux yang ditimpa.\n'
 
 run_stage "INSTALASI TERMUX NATIVE SELESAI"
+
 echo "Tahap Termux Native 1-6 selesai dan ubuntu-setup.sh telah dijalankan."
 echo "Gunakan 'pc' untuk membuka Desktop Xfce4."
