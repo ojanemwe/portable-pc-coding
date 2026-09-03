@@ -118,7 +118,6 @@ StartupNotify=false
 EOF_SHUTDOWN
 
 chmod +x ~/Desktop/shutdown.desktop
-xfconf-query -c xfce4-desktop -p /desktop-icons/file-icons/show-filesystem -s false
 
 # ============================================================
 # 4. Lingkungan Vibe Coding - bagian Termux Native
