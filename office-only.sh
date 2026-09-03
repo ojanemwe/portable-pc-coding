@@ -170,20 +170,25 @@ rm -rf temp_repo
 # ============================================================
 run_stage "TAHAP 6/6 - Penambahan Pilihan Tema"
 
-git clone --depth=1 https://github.com/vinceliuice/Orchis-theme.git /tmp/Orchis-theme
-cd /tmp/Orchis-theme
-./install.sh -d ~/.themes
-rm -rf /tmp/Orchis-theme
+mkdir -p "$PREFIX/tmp"
 
-git clone --depth=1 https://github.com/vinceliuice/WhiteSur-gtk-theme.git /tmp/WhiteSur-gtk-theme
-cd /tmp/WhiteSur-gtk-theme
+git clone https://github.com/vinceliuice/Orchis-theme.git "$PREFIX/tmp/Orchis-theme"
+cd "$PREFIX/tmp/Orchis-theme"
 ./install.sh -d ~/.themes
-rm -rf /tmp/WhiteSur-gtk-theme
+cd ~
+rm -rf "$PREFIX/tmp/Orchis-theme"
 
-git clone --depth=1 https://github.com/vinceliuice/Colloid-icon-theme.git /tmp/Colloid-icon-theme
-cd /tmp/Colloid-icon-theme
-./install.sh -d ~/.icons
-rm -rf /tmp/Colloid-icon-theme
+git clone https://github.com/vinceliuice/WhiteSur-gtk-theme.git "$PREFIX/tmp/WhiteSur-gtk-theme"
+cd "$PREFIX/tmp/WhiteSur-gtk-theme"
+./install.sh -d ~/.themes
+cd ~
+rm -rf "$PREFIX/tmp/WhiteSur-gtk-theme"
+
+git clone https://github.com/vinceliuice/Colloid-icon-theme.git "$PREFIX/tmp/Colloid-icon-theme"
+cd "$PREFIX/tmp/Colloid-icon-theme"
+./install.sh -d ~/.themes
+cd ~
+rm -rf "$PREFIX/tmp/Colloid-icon-theme"
 
 run_stage "INSTALASI TERMUX NATIVE SELESAI"
 echo "Tahap Termux Native 1-6 selesai dan ubuntu-setup.sh telah dijalankan."
