@@ -322,16 +322,19 @@ tar -xzf "$WHITESUR_TGZ" -C "$WHITESUR_ROOT"
 WHITESUR_SRC="$(find "$WHITESUR_ROOT" -mindepth 1 -maxdepth 1 -type d -name 'WhiteSur-gtk-theme-*' -print -quit)"
 [[ -n "$WHITESUR_SRC" && -d "$WHITESUR_SRC" ]] || fail "Folder WhiteSur hasil ekstraksi tidak ditemukan."
 
-# WhiteSur 2026.x has a known XFCE compatibility problem: install_themes()
-# calls the GNOME-shell builder even when gnome-shell is not installed.
-# On native Termux/XFCE this can make sassc fail because GNOME_SHELL is empty.
-# Disable only the GNOME-shell-specific functions; GTK/XFWM installation remains.
+# WhiteSur 2026.x memanggil builder GNOME Shell meskipun
+# gnome-shell tidak terpasang. Pada Termux + XFCE, lewati
+# hanya bagian GNOME Shell; GTK dan XFWM tetap di-install.
 if command -v xfce4-session >/dev/null 2>&1 && ! command -v gnome-shell >/dev/null 2>&1; then
-    printf '[INFO] XFCE detected without gnome-shell; disabling WhiteSur GNOME Shell build.\n'
-    sed -i '/source "${REPO_DIR}\/libs\/lib-install.sh"/a\
-# Termux:Xfce compatibility override: skip GNOME Shell generation.
-shell_base() { return 0; }
-install_shelly() { return 0; }' "$WHITESUR_SRC/install.sh"
+    printf '[INFO] XFCE detected without gnome-shell; skipping GNOME Shell build.\n'
+
+    # Skip shell_base() karena hanya digunakan untuk GNOME Shell.
+    sed -i '/^[[:space:]]*shell_base "${color}"/s/^/# /' \
+        "$WHITESUR_SRC/libs/lib-install.sh"
+
+    # Skip install_shelly() karena hanya digunakan untuk GNOME Shell.
+    sed -i '/^[[:space:]]*install_shelly "${color}"/s/^/# /' \
+        "$WHITESUR_SRC/libs/lib-install.sh"
 fi
 
 (
