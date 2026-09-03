@@ -170,6 +170,14 @@ rm -rf temp_repo
 # ============================================================
 run_stage "TAHAP 6/6 - Penambahan Pilihan Tema"
 
+cat << 'EOF' > "$PREFIX/bin/getent"
+#!/bin/sh
+if [ "$1" = "passwd" ]; then
+    echo "$USER:x:$(id -u):$(id -g):$USER:$HOME:/bin/sh"
+fi
+EOF
+chmod +x "$PREFIX/bin/getent"
+
 mkdir -p "$PREFIX/tmp"
 
 git clone https://github.com/vinceliuice/Orchis-theme.git "$PREFIX/tmp/Orchis-theme"
