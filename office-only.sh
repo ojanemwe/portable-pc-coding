@@ -170,33 +170,37 @@ rm -rf temp_repo
 # ============================================================
 run_stage "TAHAP 6/6 - Penambahan Pilihan Tema"
 
-cat << 'EOF' > "$PREFIX/bin/getent"
+TERMUX_PREFIX="${PREFIX:-/data/data/com.termux/files/usr}"
+export PATH="$TERMUX_PREFIX/bin:$PATH"
+
+cat << 'EOF' > "$TERMUX_PREFIX/bin/getent"
 #!/bin/sh
-if [ "$1" = "passwd" ]; then
-    echo "$USER:x:$(id -u):$(id -g):$USER:$HOME:/bin/sh"
-fi
+echo "$USER:x:1000:1000:$USER:$HOME:/bin/sh"
 EOF
-chmod +x "$PREFIX/bin/getent"
+chmod +x "$TERMUX_PREFIX/bin/getent"
 
-mkdir -p "$PREFIX/tmp"
-
-git clone https://github.com/vinceliuice/Orchis-theme.git "$PREFIX/tmp/Orchis-theme"
-cd "$PREFIX/tmp/Orchis-theme"
+mkdir -p "$TERMUX_PREFIX/tmp"
+git clone https://github.com/vinceliuice/Orchis-theme.git "$TERMUX_PREFIX/tmp/Orchis-theme"
+sed -i 's/getent passwd.*/echo "$USER:x:1000:1000:$USER:$HOME:\/bin\/sh"/' "$TERMUX_PREFIX/tmp/Orchis-theme/libs/lib-core.sh"
+cd "$TERMUX_PREFIX/tmp/Orchis-theme"
 ./install.sh -d ~/.themes
 cd ~
-rm -rf "$PREFIX/tmp/Orchis-theme"
+rm -rf "$TERMUX_PREFIX/tmp/Orchis-theme"
 
-git clone https://github.com/vinceliuice/WhiteSur-gtk-theme.git "$PREFIX/tmp/WhiteSur-gtk-theme"
-cd "$PREFIX/tmp/WhiteSur-gtk-theme"
+git clone https://github.com/vinceliuice/WhiteSur-gtk-theme.git "$TERMUX_PREFIX/tmp/WhiteSur-gtk-theme"
+sed -i 's/getent passwd.*/echo "$USER:x:1000:1000:$USER:$HOME:\/bin\/sh"/' "$TERMUX_PREFIX/tmp/WhiteSur-gtk-theme/libs/lib-core.sh"
+cd "$TERMUX_PREFIX/tmp/WhiteSur-gtk-theme"
 ./install.sh -d ~/.themes
 cd ~
-rm -rf "$PREFIX/tmp/WhiteSur-gtk-theme"
+rm -rf "$TERMUX_PREFIX/tmp/WhiteSur-gtk-theme"
 
-git clone https://github.com/vinceliuice/Colloid-icon-theme.git "$PREFIX/tmp/Colloid-icon-theme"
-cd "$PREFIX/tmp/Colloid-icon-theme"
-./install.sh -d ~/.themes
+git clone https://github.com/vinceliuice/Colloid-icon-theme.git "$TERMUX_PREFIX/tmp/Colloid-icon-theme"
+sed -i 's/getent passwd.*/echo "$USER:x:1000:1000:$USER:$HOME:\/bin\/sh"/' "$TERMUX_PREFIX/tmp/Colloid-icon-theme/libs/lib-core.sh"
+cd "$TERMUX_PREFIX/tmp/Colloid-icon-theme"
+./install.sh -d ~/.icons
 cd ~
-rm -rf "$PREFIX/tmp/Colloid-icon-theme"
+rm -rf "$TERMUX_PREFIX/tmp/Colloid-icon-theme"
+
 
 run_stage "INSTALASI TERMUX NATIVE SELESAI"
 echo "Tahap Termux Native 1-6 selesai dan ubuntu-setup.sh telah dijalankan."
