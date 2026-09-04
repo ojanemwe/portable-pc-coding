@@ -17,7 +17,7 @@ pkg update
 pkg upgrade -y
 pkg install tur-repo x11-repo -y
 pkg install termux-x11-nightly pulseaudio wget git xfce4 galculator -y
-pkg install chromium ristretto mpv -y
+pkg install chromium ristretto mpv xfce4-whiskermenu-plugin -y
 pkg install webp-pixbuf-loader libheif -y
 
 termux-setup-storage
