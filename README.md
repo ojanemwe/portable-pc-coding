@@ -54,7 +54,7 @@ Selanjutnya anda dapat **membuat Shortcut** langsung **di Home Screen** anda unt
 
 6. Karena Setup ini dibangun tanpa ROOT, maka lebih baik sembunyikan Shortcut/Launcher File System Terlebih dahulu! silahkan Masuk ke Mode desktop via Launcher, lalu buka terminal, dan masukkan salin dan tempel command berikut:
    ```
-   xfconf-query -c xfce4-desktop -p /desktop-icons/file-icons/show-filesystem -s false
+   xfconf-query -c xfce4-desktop -p /desktop-icons/file-icons/show-filesystem -n -t bool -s false
    ```
 
 ---
