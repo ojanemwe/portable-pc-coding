@@ -58,6 +58,16 @@ Selanjutnya anda dapat **membuat Shortcut** langsung **di Home Screen** anda unt
    ```
 
 ---
+# TIPS & Trick:
+1. Untuk Menghemat Penggunaan Resource (RAM & CPU) Chromium, silahkan Edit Launcher Cromium dan masukkan teks berikut pada kolom "**Command**":
+   ```
+   /data/data/com.termux/files/usr/bin/chromium-browser --enable-low-end-device-mode --disable-dev-shm-usage %U
+   ```
+   > `--enable-low-end-device-mode`: Memaksa Chromium mendeteksi sistem Anda sebagai perangkat spek rendah (misal RAM 512MB/1GB). Alhasil, ia akan sangat ketat membatasi konsumsi memorinya sendiri dan rajin membersihkan sisa RAM.
+   >
+   > `--disable-dev-shm-usage`: Ini adalah perintah wajib untuk Linux di Android. Secara bawaan, Chromium menggunakan /dev/shm (shared memory) untuk merender halaman. Di Android/Termux, folder ini kapasitasnya sangat kecil sehingga sering membuat browser macet atau gagal terbuka. Menambahkan perintah ini akan memaksa memori dialihkan ke ruang penyimpanan biasa yang lebih lega. [1] (https://github.com/termux/proot/issues/241)
+
+---
 # Penjelasan Alur kerja `install.sh`:
 > Anda dapat melakukan istalasi manual dan menyesuaikan dengan kebutuhan anda tanpa menjalankan script otomatis diatas.
 >
