@@ -11,13 +11,13 @@ run_stage() {
 # ============================================================
 # 1. Instalasi Paket Dasar Termux Native
 # ============================================================
-run_stage "TAHAP 1/7 - Instalasi Paket Dasar Termux"
+run_stage "TAHAP 1/8 - Instalasi Paket Dasar Termux"
 
 pkg update
 pkg upgrade -y
 pkg install tur-repo x11-repo -y
 pkg install termux-x11-nightly pulseaudio wget git xfce4 galculator -y
-pkg install chromium ristretto mpv -y
+pkg install chromium ristretto mpv xfce4-whiskermenu-plugin -y
 pkg install webp-pixbuf-loader libheif -y
 
 termux-setup-storage
@@ -25,7 +25,7 @@ termux-setup-storage
 # ============================================================
 # 2. Konfigurasi Launcher Script
 # ============================================================
-run_stage "TAHAP 2/7 - Membuat Launcher PC"
+run_stage "TAHAP 2/8 - Membuat Launcher PC"
 
 cat << 'EOF_PC' > ~/pc
 #!/data/data/com.termux/files/usr/bin/bash
@@ -101,7 +101,7 @@ fi
 # ============================================================
 # 3. Konfigurasi Tombol Shutdown di Desktop
 # ============================================================
-run_stage "TAHAP 3/7 - Membuat Shortcut Shutdown"
+run_stage "TAHAP 3/8 - Membuat Shortcut Shutdown"
 
 mkdir -p ~/Desktop
 
@@ -122,7 +122,7 @@ chmod +x ~/Desktop/shutdown.desktop
 # ============================================================
 # 4. Lingkungan Vibe Coding - bagian Termux Native
 # ============================================================
-run_stage "TAHAP 4/7 - Menyiapkan PRoot Debian"
+run_stage "TAHAP 4/8 - Menyiapkan PRoot Debian"
 
 pkg install geany proot-distro -y
 
@@ -138,7 +138,7 @@ fi
 # ============================================================
 # 5. Wrapper dan Shortcut AI Agent - bagian Termux Native
 # ============================================================
-run_stage "TAHAP 5/7 - Membuat Wrapper dan Shortcut AI Agent"
+run_stage "TAHAP 5/8 - Membuat Wrapper dan Shortcut AI Agent"
 
 mkdir -p ~/bin ~/Desktop
 
@@ -216,7 +216,7 @@ chmod +x ~/Desktop/Ai-Workspace.desktop
 # ============================================================
 # 6. Termux:Widget
 # ============================================================
-run_stage "TAHAP 6/7 - Membuat Shortcut Termux:Widget"
+run_stage "TAHAP 6/8 - Membuat Shortcut Termux:Widget"
 
 cat << 'EOF' > ~/.bash_profile
 if [ -f /data/data/com.termux/files/usr/etc/bash.bashrc ]; then
@@ -239,7 +239,7 @@ chmod +x ~/.shortcuts/PC-Desktop.sh
 # ============================================================
 # 7. Aplikasi Kantoran & Desain - Termux Native
 # ============================================================
-run_stage "TAHAP 7/7 - Instalasi Aplikasi Kantoran dan Desain"
+run_stage "TAHAP 7/8 - Instalasi Aplikasi Kantoran dan Desain"
 
 pkg install libreoffice mousepad featherpad gimp -y
 
@@ -268,6 +268,243 @@ git clone --depth=1 https://github.com/vinceliuice/Colloid-icon-theme.git /tmp/C
 cd /tmp/Colloid-icon-theme
 ./install.sh -d ~/.icons
 rm -rf /tmp/Colloid-icon-theme
+
+# ============================================================
+# 8. Penambahan Pilihan Tema
+# ============================================================
+run_stage "TAHAP 8/8 - Instalasi Orchis & Colloid"
+
+set -Eeuo pipefail
+
+PREFIX="${PREFIX:-/data/data/com.termux/files/usr}"
+export PATH="$PREFIX/bin:$PATH"
+
+THEME_DIR="$HOME/.local/share/themes"
+ICON_DIR="$HOME/.local/share/icons"
+
+WORK_DIR="${TMPDIR:-$PREFIX/tmp}/xfce-theme-install-$$"
+
+# ------------------------------------------------------------
+# Versi release
+# ------------------------------------------------------------
+
+ORCHIS_TAG="2026-07-07"
+COLLOID_TAG="2025-07-19"
+
+ORCHIS_URL="https://github.com/vinceliuice/Orchis-theme/archive/refs/tags/${ORCHIS_TAG}.tar.gz"
+COLLOID_URL="https://github.com/vinceliuice/Colloid-icon-theme/archive/refs/tags/${COLLOID_TAG}.tar.gz"
+
+# ------------------------------------------------------------
+# Cleanup
+# ------------------------------------------------------------
+
+cleanup() {
+    rm -rf "$WORK_DIR"
+}
+
+trap cleanup EXIT
+
+# ------------------------------------------------------------
+# Helper
+# ------------------------------------------------------------
+
+banner() {
+    printf '\n============================================================\n'
+    printf ' %s\n' "$1"
+    printf '============================================================\n\n'
+}
+
+fail() {
+    printf '\n[ERROR] %s\n' "$1" >&2
+    exit 1
+}
+
+trap 'printf "\n[ERROR] Gagal pada baris %s. Periksa pesan di atas.\n" "$LINENO" >&2' ERR
+
+# ------------------------------------------------------------
+# Direktori instalasi
+# ------------------------------------------------------------
+
+mkdir -p "$THEME_DIR" "$ICON_DIR" "$WORK_DIR"
+
+# ============================================================
+# 6.1 - Dependency
+# ============================================================
+
+banner "6.1 - Memastikan paket pembangun tersedia"
+
+pkg update -y
+
+pkg install -y \
+    wget \
+    tar \
+    gzip \
+    sassc \
+    glib \
+    libxml2 \
+    libxml2-utils \
+    gtk-update-icon-cache
+
+# ------------------------------------------------------------
+# Verifikasi dependency
+# ------------------------------------------------------------
+
+command -v sassc >/dev/null 2>&1 \
+    || fail "sassc tidak tersedia setelah instalasi."
+
+command -v gtk-update-icon-cache >/dev/null 2>&1 \
+    || fail "gtk-update-icon-cache tidak tersedia."
+
+command -v glib-compile-resources >/dev/null 2>&1 \
+    || fail "glib-compile-resources tidak tersedia."
+
+command -v xmllint >/dev/null 2>&1 \
+    || fail "xmllint tidak tersedia."
+
+command -v tar >/dev/null 2>&1 \
+    || fail "tar tidak tersedia."
+
+command -v wget >/dev/null 2>&1 \
+    || fail "wget tidak tersedia."
+
+# ============================================================
+# Helper: Download + validasi
+# ============================================================
+
+download_tarball() {
+    local url="$1"
+    local out="$2"
+
+    printf '[INFO] Download: %s\n' "$url"
+
+    wget \
+        -q \
+        --show-progress \
+        --timeout=30 \
+        --tries=3 \
+        -O "$out" \
+        "$url" \
+        || fail "Gagal mengunduh $url"
+
+    [[ -s "$out" ]] \
+        || fail "Arsip kosong: $out"
+
+    tar -tzf "$out" >/dev/null 2>&1 \
+        || fail "Arsip rusak/tidak valid: $out"
+}
+
+# ============================================================
+# 6.2 - Install Orchis GTK/XFWM
+# ============================================================
+
+banner "6.2 - Install Orchis GTK/XFWM"
+
+ORCHIS_TGZ="$WORK_DIR/Orchis-theme.tar.gz"
+ORCHIS_ROOT="$WORK_DIR/orchis"
+
+mkdir -p "$ORCHIS_ROOT"
+
+download_tarball \
+    "$ORCHIS_URL" \
+    "$ORCHIS_TGZ"
+
+tar -xzf "$ORCHIS_TGZ" -C "$ORCHIS_ROOT"
+
+ORCHIS_SRC="$(
+    find "$ORCHIS_ROOT" \
+        -mindepth 1 \
+        -maxdepth 1 \
+        -type d \
+        -name 'Orchis-theme-*' \
+        -print -quit
+)"
+
+[[ -n "$ORCHIS_SRC" && -d "$ORCHIS_SRC" ]] \
+    || fail "Folder Orchis hasil ekstraksi tidak ditemukan."
+
+printf '[INFO] Orchis source: %s\n' "$ORCHIS_SRC"
+
+(
+    cd "$ORCHIS_SRC"
+
+    bash ./install.sh \
+        -d "$THEME_DIR"
+)
+
+# ============================================================
+# 6.3 - Install Colloid Icon Theme
+# ============================================================
+
+banner "6.3 - Install Colloid Icon Theme"
+
+COLLOID_TGZ="$WORK_DIR/Colloid-icon-theme.tar.gz"
+COLLOID_ROOT="$WORK_DIR/colloid"
+
+mkdir -p "$COLLOID_ROOT"
+
+download_tarball \
+    "$COLLOID_URL" \
+    "$COLLOID_TGZ"
+
+tar -xzf "$COLLOID_TGZ" -C "$COLLOID_ROOT"
+
+COLLOID_SRC="$(
+    find "$COLLOID_ROOT" \
+        -mindepth 1 \
+        -maxdepth 1 \
+        -type d \
+        -name 'Colloid-icon-theme-*' \
+        -print -quit
+)"
+
+[[ -n "$COLLOID_SRC" && -d "$COLLOID_SRC" ]] \
+    || fail "Folder Colloid hasil ekstraksi tidak ditemukan."
+
+printf '[INFO] Colloid source: %s\n' "$COLLOID_SRC"
+
+(
+    cd "$COLLOID_SRC"
+
+    ./install.sh \
+        -d "$ICON_DIR"
+)
+
+# ============================================================
+# 6.4 - Refresh Xfce Theme/Icon Cache
+# ============================================================
+
+banner "6.4 - Refresh Xfce Theme/Icon Cache"
+
+if command -v gtk-update-icon-cache >/dev/null 2>&1; then
+
+    find "$ICON_DIR" \
+        -mindepth 1 \
+        -maxdepth 1 \
+        -type d \
+        -name 'Colloid*' \
+        -exec gtk-update-icon-cache -f -t {} \; \
+        2>/dev/null \
+        || true
+
+fi
+
+# ------------------------------------------------------------
+# Hasil instalasi
+# ------------------------------------------------------------
+
+printf '\n[OK] Tema dan ikon selesai diproses.\n'
+printf '[OK] GTK themes : %s\n' "$THEME_DIR"
+printf '[OK] Icons      : %s\n' "$ICON_DIR"
+
+printf '\n[INFO] Buka/refresh Xfce4 lalu cek:\n'
+printf '       Settings -> Appearance -> Style\n'
+printf '       Settings -> Appearance -> Icons\n'
+
+printf '\n[INFO] Instalasi dilakukan sebagai user Termux.\n'
+printf '[INFO] Tidak membutuhkan root Android.\n'
+printf '[INFO] Tidak membutuhkan sudo.\n'
+
+run_stage "INSTALASI TEMA ORCHIS & COLLOID SELESAI"
 
 # ============================================================
 # Debian PRoot: lanjutkan dengan debian-setup.sh
