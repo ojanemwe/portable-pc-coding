@@ -52,6 +52,11 @@ Selanjutnya anda dapat **membuat Shortcut** langsung **di Home Screen** anda unt
 
 5. Ketuk **PC-Desktop.sh** pada widget untuk langsung masuk ke lingkungan kerja Xfce4.
 
+6. Karena Setup ini dibangun tanpa ROOT, maka lebih baik sembunyikan Shortcut/Launcher File System Terlebih dahulu! silahkan Masuk ke Mode desktop via Launcher, lalu buka terminal, dan masukkan salin dan tempel command berikut:
+   ```
+   xfconf-query -c xfce4-desktop -p /desktop-icons/file-icons/show-filesystem -s false
+   ```
+
 ---
 # Penjelasan Alur kerja `install.sh`:
 > Anda dapat melakukan istalasi manual dan menyesuaikan dengan kebutuhan anda tanpa menjalankan script otomatis diatas.
