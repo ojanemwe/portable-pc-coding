@@ -259,16 +259,6 @@ mv fonts/* ~/.local/share/fonts/
 cd ..
 rm -rf temp_repo
 
-git clone --depth=1 https://github.com/vinceliuice/Orchis-theme.git /tmp/Orchis-theme
-cd /tmp/Orchis-theme
-./install.sh -d ~/.themes
-rm -rf /tmp/Orchis-theme
-
-git clone --depth=1 https://github.com/vinceliuice/Colloid-icon-theme.git /tmp/Colloid-icon-theme
-cd /tmp/Colloid-icon-theme
-./install.sh -d ~/.icons
-rm -rf /tmp/Colloid-icon-theme
-
 # ============================================================
 # 8. Penambahan Pilihan Tema
 # ============================================================
